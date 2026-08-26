@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immanuel Anaborne — Software Engineer</title>
+<meta name="description" content="Software engineer building latency-sensitive trading infrastructure for prediction markets. Penn CS+English '26, based in New York.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg: #EEF2F4;
+    --surface: #FFFFFF;
+    --surface-2: #E4E9EC;
+    --ink: #12181C;
+    --ink-soft: #4B5A63;
+    --ink-faint: #7C8A91;
+    --line: #C9D3D8;
+    --line-strong: #A9B7BD;
+    --accent: #B96A21;
+    --accent-ink: #FFFFFF;
+    --accent-2: #1C6E8C;
+    --shadow: 0 1px 2px rgba(18,24,28,0.06), 0 8px 24px -12px rgba(18,24,28,0.18);
+    --radius: 3px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #0E1417;
+      --surface: #161D21;
+      --surface-2: #1D262B;
+      --ink: #E7EDEF;
+      --ink-soft: #93A3AA;
+      --ink-faint: #647177;
+      --line: #2A363B;
+      --line-strong: #3B4A50;
+      --accent: #E0954A;
+      --accent-ink: #12181C;
+      --accent-2: #5CC2E6;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #0E1417;
+    --surface: #161D21;
+    --surface-2: #1D262B;
+    --ink: #E7EDEF;
+    --ink-soft: #93A3AA;
+    --ink-faint: #647177;
+    --line: #2A363B;
+    --line-strong: #3B4A50;
+    --accent: #E0954A;
+    --accent-ink: #12181C;
+    --accent-2: #5CC2E6;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  /* ============ RESET / BASE ============ */
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{ margin:0; text-wrap: balance; }
+  p{ margin:0; }
+  a{ color: inherit; }
+  img,svg{ max-width:100%; display:block; }
+  ::selection{ background: var(--accent); color: var(--accent-ink); }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--accent-2);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+  html{ scroll-behavior: smooth; }
+
+  .font-display{ font-family: "Newsreader", ui-serif, Georgia, serif; }
+  .font-mono{ font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace; }
+
+  .eyebrow{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+
+  .wrap{
+    width: 100%;
+    max-width: 1080px;
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 48px);
+  }
+
+  /* ============ NAV ============ */
+  header.site{
+    position: sticky; top:0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 16px;
+    padding-block: 14px;
+  }
+  .mark{
+    font-family:"IBM Plex Mono", monospace;
+    font-weight:600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    display:flex; align-items:center; gap:8px;
+    text-decoration:none;
+  }
+  .mark .dot{
+    width:8px; height:8px; border-radius:50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-2) 22%, transparent);
+  }
+  nav.links{
+    display:flex; align-items:center; gap: clamp(14px,3vw,26px);
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.8rem;
+  }
+  nav.links a{ text-decoration:none; color: var(--ink-soft); border-bottom: 1px solid transparent; padding-bottom:2px; }
+  nav.links a:hover{ color: var(--ink); border-color: var(--line-strong); }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.78rem; font-weight:600;
+    letter-spacing:0.02em;
+    padding: 9px 14px;
+    border-radius: var(--radius);
+    text-decoration:none;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    background: var(--surface);
+    transition: border-color .15s ease, transform .15s ease, background .15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover{ border-color: var(--ink-faint); transform: translateY(-1px); }
+  .btn.primary{
+    background: var(--accent); color: var(--accent-ink); border-color: var(--accent);
+  }
+  .btn.primary:hover{ filter: brightness(1.06); }
+  .nav-cta{ display:flex; gap:10px; }
+  .nav-cta .btn span.full{ display:inline; }
+  @media (max-width: 720px){
+    nav.links{ display:none; }
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    padding-block: clamp(52px, 9vw, 96px) clamp(40px, 6vw, 64px);
+    border-bottom: 1px solid var(--line);
+  }
+  .status-line{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.76rem; color: var(--ink-soft);
+    margin-bottom: 22px;
+    padding: 6px 12px 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+  }
+  .status-line .pulse{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--accent-2);
+    position:relative;
+  }
+  .status-line .pulse::after{
+    content:""; position:absolute; inset:-5px; border-radius:50%;
+    border: 1px solid var(--accent-2);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{ transform:scale(0.6); opacity:0.9; }
+    100%{ transform:scale(2.1); opacity:0; }
+  }
+  h1.name{
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+  }
+  .hero-sub{
+    margin-top: 20px;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: var(--ink-soft);
+    max-width: 56ch;
+    line-height: 1.6;
+  }
+  .hero-sub b{ color: var(--ink); font-weight:600; }
+  .hero-actions{
+    margin-top: 30px;
+    display:flex; flex-wrap:wrap; gap:10px;
+  }
+
+  /* stat ticker */
+  .ticker{
+    margin-top: clamp(40px,6vw,64px);
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .stat{
+    padding: 18px 18px 16px;
+    border-left: 1px solid var(--line);
+  }
+  .stat:first-child{ border-left:none; }
+  .stat .k{
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .stat .l{
+    margin-top: 6px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .stat .s{
+    margin-top: 3px;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+  }
+  .ticker-note{
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+  }
+  @media (max-width: 760px){
+    .ticker{ grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(3){ border-left:none; }
+    .stat:nth-child(3), .stat:nth-child(4){ border-top: 1px solid var(--line); }
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding-block: clamp(48px, 8vw, 84px); border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap: 16px;
+    margin-bottom: clamp(28px, 4vw, 42px);
+  }
+  .section-head h2{
+    font-family:"Newsreader", serif;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    font-weight:500;
+  }
+
+  /* ============ PROJECT CARDS ============ */
+  .project{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: clamp(22px, 4vw, 36px);
+    box-shadow: var(--shadow);
+  }
+  .project + .project{ margin-top: 24px; }
+  .project-head{
+    display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .project-title{
+    font-family:"Newsreader", serif;
+    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+    font-weight:500;
+  }
+  .project-stack{
+    margin-top: 4px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+  }
+  .badges{ display:flex; flex-wrap:wrap; gap:6px; }
+  .badge{
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+    padding: 4px 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    white-space:nowrap;
+  }
+  .project-desc{
+    color: var(--ink-soft);
+    max-width: 74ch;
+    font-size: 0.98rem;
+    margin-bottom: 20px;
+  }
+  figure.diagram{
+    margin: 0 0 24px;
+    padding: 18px clamp(6px,2vw,18px);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  figure.diagram svg{ width:100%; height:auto; color: var(--ink-soft); }
+  figure.diagram svg .accent-path{ color: var(--accent-2); }
+  figure.diagram svg .refuse-path{ color: var(--accent); }
+  figure.diagram figcaption{
+    margin-top: 12px;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    text-align:center;
+  }
+  ul.bullets{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px; }
+  ul.bullets li{
+    position:relative; padding-left: 20px;
+    font-size: 0.94rem;
+    color: var(--ink);
+  }
+  ul.bullets li::before{
+    content:"›"; position:absolute; left:0; top:0;
+    color: var(--accent-2); font-family:"IBM Plex Mono", monospace; font-weight:600;
+  }
+  .caveat{
+    margin-top: 20px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .caveat b{ color: var(--ink); font-family:"IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing:0.05em; text-transform:uppercase; display:block; margin-bottom:6px; }
+  .project-link{
+    margin-top: 20px;
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.84rem; font-weight:600;
+    text-decoration:none;
+    color: var(--accent-2);
+    border-bottom: 1px solid transparent;
+  }
+  .project-link:hover{ border-color: var(--accent-2); }
+
+  /* ============ EXPERIENCE ============ */
+  .job{ display:grid; grid-template-columns: 200px 1fr; gap: 24px; }
+  .job + .job{ margin-top: 36px; padding-top: 36px; border-top: 1px solid var(--line); }
+  .job-meta .role{ font-weight:600; font-size: 1.02rem; color: var(--ink); }
+  .job-meta .org{ margin-top:2px; font-size: 0.9rem; color: var(--ink-soft); }
+  .job-meta .when{
+    margin-top: 10px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.74rem; color: var(--ink-faint);
+  }
+  @media (max-width: 700px){
+    .job{ grid-template-columns: 1fr; gap: 10px; }
+  }
+
+  /* ============ BACKGROUND (edu + additional) ============ */
+  .bg-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,4vw,48px);
+  }
+  @media (max-width: 760px){ .bg-grid{ grid-template-columns: 1fr; } }
+  .bg-card .role{ font-weight:600; font-size:1.02rem; }
+  .bg-card .org{ margin-top:2px; color: var(--ink-soft); font-size:0.9rem; }
+  .bg-card .when{ margin-top:8px; font-family:"IBM Plex Mono", monospace; font-size:0.74rem; color: var(--ink-faint); }
+  .bg-card p.note{ margin-top: 14px; font-size: 0.92rem; color: var(--ink); max-width: 46ch; }
+
+  .skills{ margin-top: clamp(36px,5vw,56px); }
+  .skills .eyebrow{ margin-bottom: 14px; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.76rem;
+    padding: 6px 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--ink-soft);
+    background: var(--surface);
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    padding-block: clamp(36px,6vw,56px);
+  }
+  .footer-inner{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap: 20px;
+  }
+  .foot-links{ display:flex; flex-wrap:wrap; gap: 18px; font-family:"IBM Plex Mono", monospace; font-size:0.82rem; }
+  .foot-links a{ text-decoration:none; color: var(--ink-soft); }
+  .foot-links a:hover{ color: var(--accent-2); }
+  .foot-note{
+    margin-top: 22px;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    max-width: 62ch;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav-inner">
+    <a class="mark" href="#top"><span class="dot"></span>IMMANUEL ANABORNE</a>
+    <nav class="links">
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#background">Background</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn" href="mailto:immanuel.anaborne@gmail.com">Email</a>
+      <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener"><span class="full">Résumé (PDF)</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="status-line"><span class="pulse"></span>Open to full-time roles — prediction markets &amp; sports trading</div>
+      <p class="eyebrow" style="margin-bottom:14px;">Software Engineer · Prediction Markets &amp; Sports Trading</p>
+      <h1 class="name font-display">Immanuel<br>Anaborne</h1>
+      <p class="hero-sub">I build the infrastructure that has to be right under a clock — order execution, cross-venue matching, and the discipline to publish a negative result instead of hiding it. <b>Penn CS + English '26</b>, based in New York.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener">Download résumé (PDF)</a>
+        <a class="btn" href="https://github.com/anaborne" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="btn" href="https://linkedin.com/in/anaborne" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+
+      <div class="ticker">
+        <div class="stat">
+          <div class="k">4.33 / 10.53<span style="font-size:0.85rem;">ms</span></div>
+          <div class="l">Detect → Fire, live system</div>
+          <div class="s">p50 / p99 · n=139*</div>
+        </div>
+        <div class="stat">
+          <div class="k">~1B → 63K</div>
+          <div class="l">Cross-venue search space</div>
+          <div class="s">IDF-weighted inverted index</div>
+        </div>
+        <div class="stat">
+          <div class="k">388</div>
+          <div class="l">Offline tests, public repo</div>
+          <div class="s">mypy --strict · ruff clean</div>
+        </div>
+        <div class="stat">
+          <div class="k">60,000+</div>
+          <div class="l">Filings processed, Wharton RA</div>
+          <div class="s">async ingestion, Pydantic-validated</div>
+        </div>
+      </div>
+      <p class="ticker-note">*Live-system latency, not reproducible from the public repo — it needs a signed round trip to a live demo account. Quoted as a lower bound with n=139 attached, every time.</p>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Selected work</h2>
+        <p class="eyebrow">Public repositories, verified by running</p>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div>
+            <div class="project-title">Kalshi / Polymarket Trading Infrastructure</div>
+            <div class="project-stack">Python · asyncio · uvloop · SQLite · Unix domain sockets</div>
+          </div>
+          <div class="badges">
+            <span class="badge">mypy --strict</span>
+            <span class="badge">ruff clean</span>
+            <span class="badge">388 tests</span>
+            <span class="badge">public extraction</span>
+          </div>
+        </div>
+        <p class="project-desc">A two-process trading system for Kalshi and Polymarket: a poller that decides <em>what</em> to do, and a pre-warmed executor that owns <em>how</em> — order count, time-in-force, self-trade prevention — connected over a Unix domain socket so unbounded decision work never contends with the event loop that actually submits an order.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 900 260" role="img" aria-label="The poller sends a non-blocking wake over a Unix domain socket to the executor, which checks a kill switch and risk gate before dispatching an order to the exchange API; a refused or killed fire writes a rejected row instead.">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+            <g font-family="IBM Plex Mono, monospace" font-size="12" fill="currentColor" stroke="currentColor" stroke-width="1.3">
+              <!-- Poller -->
+              <rect x="16" y="105" width="118" height="56" rx="2" fill="none"/>
+              <text x="75" y="138" text-anchor="middle" font-weight="600">poller</text>
+
+              <!-- socket -->
+              <line x1="134" y1="133" x2="220" y2="133" marker-end="url(#arrow)"/>
+              <text x="177" y="122" text-anchor="middle" font-size="10.5">wake (non-blocking)</text>
+              <rect x="220" y="112" width="96" height="42" rx="2" fill="none" stroke-dasharray="3,2"/>
+              <text x="268" y="137" text-anchor="middle" font-size="10.5">unix socket</text>
+
+              <!-- executor -->
+              <line x1="316" y1="133" x2="382" y2="133" marker-end="url(#arrow)"/>
+              <rect x="382" y="105" width="130" height="56" rx="2" fill="none"/>
+              <text x="447" y="132" text-anchor="middle" font-weight="600">executor</text>
+              <text x="447" y="148" text-anchor="middle" font-size="9.5" fill="currentColor" opacity="0.75">WakeAck before dispatch</text>
+
+              <!-- risk diamond -->
+              <line x1="512" y1="133" x2="576" y2="133" marker-end="url(#arrow)"/>
+              <polygon points="580,100 656,133 580,166 504,133" fill="none" class="accent-path" stroke="currentColor"/>
+              <text x="580" y="129" text-anchor="middle" font-size="10">kill switch /</text>
+              <text x="580" y="142" text-anchor="middle" font-size="10">risk gate</text>
+
+              <!-- pass -->
+              <line x1="656" y1="133" x2="726" y2="133" marker-end="url(#arrow)"/>
+              <text x="691" y="122" text-anchor="middle" font-size="10.5">clear</text>
+              <rect x="726" y="105" width="150" height="56" rx="2" fill="none"/>
+              <text x="801" y="128" text-anchor="middle" font-weight="600" font-size="11">exchange API</text>
+              <text x="801" y="144" text-anchor="middle" font-size="9.5" opacity="0.75">POST /orders</text>
+
+              <!-- refuse -->
+              <line x1="580" y1="166" x2="580" y2="210" marker-end="url(#arrow)" class="refuse-path" stroke="currentColor"/>
+              <text x="612" y="192" text-anchor="start" font-size="10.5" class="refuse-path" fill="currentColor">engaged / refused</text>
+              <rect x="470" y="210" width="220" height="40" rx="2" fill="none" class="refuse-path" stroke="currentColor"/>
+              <text x="580" y="235" text-anchor="middle" font-size="10.5" class="refuse-path" fill="currentColor">rejected row (audit trail)</text>
+            </g>
+          </svg>
+          <figcaption>Every refusal writes a row — a halted system's inaction is in the audit trail, not inferred from its absence.</figcaption>
+        </figure>
+
+        <ul class="bullets">
+          <li>Chose uvloop over stock asyncio on measured evidence, not assumption: in the public benchmark, wake-send p99 drops from 1.35ms to 0.73ms — 46% faster.</li>
+          <li>Designed an IDF-weighted inverted index that prices a full two-venue cross by cutting a ~1B-pair search space to ~63K scored candidates.</li>
+          <li>Built a settlement gate that blocks any pair whose payout terms differ or can't be verified — caught 33 false "identical" matches whose legs both resolve NO when a game ends in a draw.</li>
+          <li>Root-caused a position-cap defect that had rejected 4,233 valid orders over 23 hours against zero open positions; replaced the counter-based estimate with live exchange-position reconciliation at no added API cost.</li>
+          <li>Runs strategy searches as pre-registered experiments — criterion, sample size, and stopping rule fixed before data — and kills each on its own evidence rather than re-cutting until it passes.</li>
+        </ul>
+
+        <div class="caveat">
+          <b>On the numbers above the fold</b>
+          The parent system's live detect→fire figure (4.33ms p50 / 10.53ms p99) isn't reproducible from the public repo — it needs a signed round trip to a live demo account, so it's quoted with n=139 and "lower bound" attached, always. What the repo ships instead is the benchmark that <em>is</em> reproducible: RSA-PSS signing and a real poller → socket → executor round trip, no credentials or network required, printing what it measured rather than what a README claims.
+        </div>
+
+        <a class="project-link" href="https://github.com/anaborne/prediction-market-infra" target="_blank" rel="noopener">View source &amp; benchmarks → github.com/anaborne/prediction-market-infra</a>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div>
+            <div class="project-title">Google Write MCP</div>
+            <div class="project-stack">TypeScript · Node.js · Google Drive API · MCP</div>
+          </div>
+          <div class="badges">
+            <span class="badge">MIT</span>
+            <span class="badge">CI: Node 18/20/22</span>
+            <span class="badge">live-Drive verified</span>
+          </div>
+        </div>
+        <p class="project-desc">An MCP server that gives an AI agent in-place writes to Google Drive files, guarded by optimistic-concurrency revision tokens that refuse a stale write instead of silently forking the document.</p>
+        <ul class="bullets">
+          <li>Verified with 55 unit tests plus a 41-check suite that runs against a live Drive account.</li>
+          <li>MIT-licensed and published; CI green on Node 18, 20, and 22.</li>
+        </ul>
+        <a class="project-link" href="https://github.com/anaborne/gdrive-write-mcp" target="_blank" rel="noopener">View source → github.com/anaborne/gdrive-write-mcp</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Experience</h2>
+        <p class="eyebrow">June 2024 — Present</p>
+      </div>
+
+      <div class="job">
+        <div class="job-meta">
+          <div class="role">Data Engineering<br>Research Assistant</div>
+          <div class="org">Wharton Accounting Department</div>
+          <div class="when">JUN 2025 – JUN 2026<br>PHILADELPHIA, PA</div>
+        </div>
+        <ul class="bullets">
+          <li>Cut manual disclosure-classification effort 50% with a RAG pipeline (OpenAI API) mapping unstructured corporate filings to trade codes, plus an event-driven ingestion layer for asynchronous filing updates.</li>
+          <li>Built an async ingestion service (asyncio, BeautifulSoup) that pulled and parsed 60,000+ corporate filings, with Pydantic schema validation and pytest suites gating data integrity before load.</li>
+          <li>Deduplicated and normalized entities across 500+ firms with inconsistent naming using vectorized pandas/NumPy ETL, removing manual entity-matching from the pipeline.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-meta">
+          <div class="role">Software Engineer<br>Intern</div>
+          <div class="org">GoodRun</div>
+          <div class="when">MAY 2024 – AUG 2024<br>NEW YORK, NY</div>
+        </div>
+        <ul class="bullets">
+          <li>Built and shipped an in-house React feedback tool that replaced a paid third-party vendor, cutting license cost and giving the team direct ownership of the data pipeline.</li>
+          <li>Reduced production deployment failures 15% by hardening CI/CD pipelines with GitHub Actions and rollback rules.</li>
+          <li>Owned triage and resolution of 20+ production defects across the feedback and CI tooling codebase on a weekly release cycle.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="background">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Background</h2>
+        <p class="eyebrow">Education &amp; additional</p>
+      </div>
+
+      <div class="bg-grid">
+        <div class="bg-card">
+          <div class="role">B.A. Computer Science &amp; English</div>
+          <div class="org">University of Pennsylvania · QuestBridge Match Scholar</div>
+          <div class="when">GRADUATED AUGUST 2026<br>PHILADELPHIA, PA</div>
+        </div>
+        <div class="bg-card">
+          <div class="role">U.S. National Team Training Partner</div>
+          <div class="org">Short Track Speed Skating · US Speedskating</div>
+          <div class="when">2019 – 2022</div>
+          <p class="note">Named twice to the U.S. Junior Development Team; placed 15th nationally on two occasions. Competing at a national level under a stopwatch is the same discipline this résumé is otherwise about — decide fast, on evidence, with no do-overs.</p>
+        </div>
+      </div>
+
+      <div class="skills">
+        <p class="eyebrow">Technical skills</p>
+        <div class="chip-row">
+          <span class="chip">Python</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">SQL</span>
+          <span class="chip">Node.js</span><span class="chip">REST APIs</span><span class="chip">asyncio</span><span class="chip">Pydantic</span><span class="chip">React</span><span class="chip">MCP servers</span>
+          <span class="chip">pandas</span><span class="chip">NumPy</span><span class="chip">RAG pipelines</span><span class="chip">OpenAI API</span><span class="chip">MySQL</span>
+          <span class="chip">AWS</span><span class="chip">Apache Kafka</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">Git</span><span class="chip">pytest</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <p class="eyebrow" style="font-size:0.76rem;">© 2026 Immanuel Anaborne</p>
+      <div class="foot-links">
+        <a href="mailto:immanuel.anaborne@gmail.com">immanuel.anaborne@gmail.com</a>
+        <a href="https://github.com/anaborne" target="_blank" rel="noopener">github.com/anaborne</a>
+        <a href="https://linkedin.com/in/anaborne" target="_blank" rel="noopener">linkedin.com/in/anaborne</a>
+        <a href="resume.pdf" target="_blank" rel="noopener">résumé.pdf</a>
+      </div>
+    </div>
+    <p class="foot-note">This page is a static file in a public repository — no build step, no analytics, no tracking. Everything on it is runnable, sourced, or downloadable; nothing is asserted that the linked repos or the résumé don't already say.</p>
+  </div>
+</footer>
+
+</body>
+</html>
