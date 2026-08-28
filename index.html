@@ -450,9 +450,9 @@
 
       <div class="ticker">
         <div class="stat">
-          <div class="k">4.33 / 10.53<span style="font-size:0.85rem;">ms</span></div>
-          <div class="l">Detect → Fire, live system</div>
-          <div class="s">p50 / p99 · n=139*</div>
+          <div class="k">1.35 &rarr; 0.725<span style="font-size:0.85rem;">ms</span></div>
+          <div class="l">Wake-send p99, asyncio &rarr; uvloop</div>
+          <div class="s">reproducible from a clean clone</div>
         </div>
         <div class="stat">
           <div class="k">~1B → 63K</div>
@@ -470,7 +470,6 @@
           <div class="s">async ingestion, Pydantic-validated</div>
         </div>
       </div>
-      <p class="ticker-note">*Live-system latency, not reproducible from the public repo — it needs a signed round trip to a live demo account. Quoted as a lower bound with n=139 attached, every time.</p>
     </div>
   </section>
 
@@ -553,8 +552,8 @@
         </ul>
 
         <div class="caveat">
-          <b>On the numbers above the fold</b>
-          The parent system's live detect→fire figure (4.33ms p50 / 10.53ms p99) isn't reproducible from the public repo — it needs a signed round trip to a live demo account, so it's quoted with n=139 and "lower bound" attached, always. What the repo ships instead is the benchmark that <em>is</em> reproducible: RSA-PSS signing and a real poller → socket → executor round trip, no credentials or network required, printing what it measured rather than what a README claims.
+          <b>What the benchmark measures</b>
+          Both benchmarks in the repo generate their own data and need no credentials and no network: RSA-PSS signing timed against an ephemeral keypair, and a real poller &rarr; socket &rarr; executor round trip against a fake venue client. The numbers above the fold come out of that harness on a clean clone. End-to-end detect&rarr;fire on the live system needs a signed round trip to a demo account, so it is not published here.
         </div>
 
         <a class="project-link" href="https://github.com/anaborne/prediction-market-infra" target="_blank" rel="noopener">View source &amp; benchmarks → github.com/anaborne/prediction-market-infra</a>
