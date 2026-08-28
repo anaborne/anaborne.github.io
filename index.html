@@ -557,6 +557,48 @@
       <div class="project">
         <div class="project-head">
           <div>
+            <div class="project-title">NFL Pricing Model</div>
+            <div class="project-stack">Python · pandas · walk-forward Elo</div>
+          </div>
+          <div class="badges">
+            <span class="badge">pre-registered</span>
+            <span class="badge">272 games</span>
+            <span class="badge">publishes its loss</span>
+          </div>
+        </div>
+        <p class="project-desc">A walk-forward Elo model over the 2025 NFL season, graded against the de-vigged market moneyline. The constants were fixed before any result was read, and the places the model loses to the market are in the repository rather than trimmed out of it.</p>
+        <ul class="bullets">
+          <li>Walk-forward Elo over 272 games using only pre-game information, constants fixed before any result.</li>
+          <li>Brier 0.224 against the market's 0.212, reported with a full calibration diagram including where it lost.</li>
+          <li>Where model and market disagree by more than 0.10 (n=57), the model's Brier is 0.2588 against the market's 0.2054 and its directional hit rate falls to 50.9% — the gap widens with disagreement instead of narrowing, which is the opposite of a tradeable edge.</li>
+        </ul>
+        <a class="project-link" href="https://github.com/anaborne/nfl-pricing-model" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/nfl-pricing-model</a>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div>
+            <div class="project-title">Kalshi Weather Market Calibration Study</div>
+            <div class="project-stack">Python · pandas · pre-registered backtest</div>
+          </div>
+          <div class="badges">
+            <span class="badge">pre-registered</span>
+            <span class="badge">kill criterion triggered</span>
+            <span class="badge">$0 data cost</span>
+          </div>
+        </div>
+        <p class="project-desc">A pre-registered test of whether Kalshi's daily temperature markets are mispriced. They are not. The kill criterion was written down before any backtest data was pulled, it triggered in every stratum, and the strategy was killed on that evidence.</p>
+        <ul class="bullets">
+          <li>Over 235,145 evaluated bucket-hours, the market mid-quote scored Brier 0.0772 against the model's 0.1739.</li>
+          <li>Pulled 60,906 settled markets and 6.8M hourly observations at $0 cost, from unauthenticated public endpoints.</li>
+          <li>Kill criterion fixed in writing before any backtest data, triggered in every stratum, strategy killed rather than re-cut until it passed.</li>
+        </ul>
+        <a class="project-link" href="https://github.com/anaborne/kalshi-temperature-calibration" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/kalshi-temperature-calibration</a>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div>
             <div class="project-title">Google Write MCP</div>
             <div class="project-stack">TypeScript · Node.js · Google Drive API · MCP</div>
           </div>
