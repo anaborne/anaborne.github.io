@@ -497,7 +497,7 @@
         <p class="project-desc">A two-process trading system for Kalshi and Polymarket: a poller that decides <em>what</em> to do, and a pre-warmed executor that owns <em>how</em> — order count, time-in-force, self-trade prevention — connected over a Unix domain socket so unbounded decision work never contends with the event loop that actually submits an order.</p>
 
         <figure class="diagram">
-          <svg viewBox="0 16 900 252" role="img" aria-label="The poller sends a non-blocking wake over a Unix domain socket; the executor acknowledges it before awaiting dispatch, then a kill switch and risk gate decide between posting the order to the exchange API and appending a rejected row to the telemetry database.">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 16 900 252" role="img" aria-label="The poller sends a non-blocking wake over a Unix domain socket; the executor acknowledges it before awaiting dispatch, then a kill switch and risk gate decide between posting the order to the exchange API and appending a rejected row to the telemetry database.">
             <defs>
               <marker id="pmi-a" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path class="m-base" d="M0,1.2 L9,5 L0,8.8 z"/></marker>
               <marker id="pmi-a2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path class="m-ack" d="M0,1.2 L9,5 L0,8.8 z"/></marker>
