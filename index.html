@@ -654,6 +654,29 @@
       <div class="project">
         <div class="project-head">
           <div>
+            <div class="project-title">Freshli</div>
+            <div class="project-stack">TypeScript · Next.js 15 · Supabase · OpenAI</div>
+          </div>
+          <div class="badges">
+            <span class="badge">28 tests</span>
+            <span class="badge">CI across 4 timezones</span>
+            <span class="badge">bugs published</span>
+          </div>
+        </div>
+        <p class="project-desc">A food-inventory app: photograph the groceries, get an editable inventory, get recipes from what is actually in the fridge. The part worth reading is the refactor. Pulling the logic that had been written twice into tested pure functions turned up five live defects, and the repository documents them instead of the feature list.</p>
+        <ul class="bullets">
+          <li>Every expiration date read a day early west of UTC. A bare <code>YYYY-MM-DD</code> parses as UTC midnight per the spec and was compared against a local clock, so in New York an item expiring today displayed as expired from 20:00 the evening before. CI now runs the suite under UTC, America/New_York, Asia/Tokyo and Pacific/Kiritimati, because a green run in UTC alone would not have caught it.</li>
+          <li>The day arithmetic mutated the value it then compared against, so the branch on the following line was correct only by accident and only while those two lines stayed in that order.</li>
+          <li>The recipe-line parser matched integer quantities only, so <code>Chicken Thighs (1.5 lb)</code> fell through to the branch meant for salt and pepper and deducted 1 from the user's inventory instead of 1.5. A wrong write, silently.</li>
+          <li>The <code>next/image</code> allowlist for generated recipe images sat in <code>next.config.js</code> while an empty <code>next.config.ts</code> shadowed it, so Next 15 ignored the file and every recipe illustration threw.</li>
+          <li>28 tests over pure functions, no network, database, API key or component rendering, running in about 150ms. Typecheck and lint are clean gates rather than steps that have always been red.</li>
+        </ul>
+        <a class="project-link" href="https://github.com/anaborne/freshli" target="_blank" rel="noopener">View source &amp; tests → github.com/anaborne/freshli</a>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div>
             <div class="project-title">Google Write MCP</div>
             <div class="project-stack">TypeScript · Node.js · Google Drive API · MCP</div>
           </div>
