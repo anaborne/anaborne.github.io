@@ -563,6 +563,29 @@
       <div class="project">
         <div class="project-head">
           <div>
+            <div class="project-title">Kalshi Prop Calibration</div>
+            <div class="project-stack">Python · numpy · scipy · pandas</div>
+          </div>
+          <div class="badges">
+            <span class="badge">pre-registered</span>
+            <span class="badge">99 tests</span>
+            <span class="badge">corrections published</span>
+          </div>
+        </div>
+        <p class="project-desc">A pre-registered test of whether a forecast built from free public data beats the Kalshi mid-quote on NFL and NBA player props. The headline is a null. The finding worth keeping is structural: the midpoint convention stops being a probability when one side of the book is absent.</p>
+        <ul class="bullets">
+          <li>Hypotheses, features, model form, split, fee treatment and kill criteria were written down before any data was pulled. Later corrections are appended and dated, with the wrong text left standing.</li>
+          <li>The midpoint convention (yes_bid + yes_ask)/2 stops tracking the strike when one side of the book is absent, which happens on 16.0% of 102,860 scored observations, and that alone inverts the sign of the headline Brier skill score.</li>
+          <li>Caught a scoring-hour boundary bug that would have priced 88,796 of 144,176 observations (61.6%) with an hour of market information the model was denied, in the market's favour, before any score was recorded.</li>
+          <li>Free public data reproduces the exchange's own settlement on 61,978 of 61,984 resolvable markets (99.990%), with all six disagreements named by ticker.</li>
+          <li>Every statistic reproduces from a clean clone in about 30 seconds with no network, off 4.7 MB of committed extracts.</li>
+        </ul>
+        <a class="project-link" href="https://github.com/anaborne/kalshi-prop-calibration" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/kalshi-prop-calibration</a>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div>
             <div class="project-title">NFL Pricing Model</div>
             <div class="project-stack">Python · pandas · walk-forward Elo</div>
           </div>
