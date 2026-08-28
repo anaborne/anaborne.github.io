@@ -438,7 +438,7 @@
 
   <section class="hero">
     <div class="wrap">
-      <div class="status-line"><span class="pulse"></span>Open to full-time roles — prediction markets &amp; sports trading</div>
+      <div class="status-line"><span class="pulse"></span>Available immediately — full-time roles in prediction markets &amp; sports trading</div>
       <p class="eyebrow" style="margin-bottom:14px;">Software Engineer · Prediction Markets &amp; Sports Trading</p>
       <h1 class="name font-display">Immanuel<br>Anaborne</h1>
       <p class="hero-sub">I build the infrastructure that has to be right under a clock — order execution, cross-venue matching, and the discipline to publish a negative result instead of hiding it. <b>Penn CS + English '26</b>, based in New York.</p>
@@ -460,7 +460,7 @@
           <div class="s">IDF-weighted inverted index</div>
         </div>
         <div class="stat">
-          <div class="k">388</div>
+          <div class="k">391</div>
           <div class="l">Offline tests, public repo</div>
           <div class="s">mypy --strict · ruff clean</div>
         </div>
@@ -490,7 +490,7 @@
           <div class="badges">
             <span class="badge">mypy --strict</span>
             <span class="badge">ruff clean</span>
-            <span class="badge">388 tests</span>
+            <span class="badge">391 tests</span>
             <span class="badge">public extraction</span>
           </div>
         </div>
@@ -545,7 +545,7 @@
         </figure>
 
         <ul class="bullets">
-          <li>Chose uvloop over stock asyncio on measured evidence, not assumption: in the public benchmark, wake-send p99 drops from 1.35ms to 0.73ms — 46% faster.</li>
+          <li>Chose uvloop over stock asyncio on measured evidence, not assumption: in the public benchmark, wake-send p99 drops from 1.35ms to 0.725ms — 46% faster.</li>
           <li>Designed an IDF-weighted inverted index that prices a full two-venue cross by cutting a ~1B-pair search space to ~63K scored candidates.</li>
           <li>Built a settlement gate that blocks any pair whose payout terms differ or can't be verified — caught 33 false "identical" matches whose legs both resolve NO when a game ends in a draw.</li>
           <li>Root-caused a position-cap defect that had rejected 4,233 valid orders over 23 hours against zero open positions; replaced the counter-based estimate with live exchange-position reconciliation at no added API cost.</li>
@@ -578,7 +578,7 @@
           <li>The midpoint convention (yes_bid + yes_ask)/2 stops tracking the strike when one side of the book is absent, which happens on 16.0% of 102,860 scored observations, and that alone inverts the sign of the headline Brier skill score.</li>
           <li>Caught a scoring-hour boundary bug that would have priced 88,796 of 144,176 observations (61.6%) with an hour of market information the model was denied, in the market's favour, before any score was recorded.</li>
           <li>Free public data reproduces the exchange's own settlement on 61,978 of 61,984 resolvable markets (99.990%), with all six disagreements named by ticker.</li>
-          <li>Every statistic reproduces from a clean clone in about 30 seconds with no network, off 4.7 MB of committed extracts.</li>
+          <li>Every S1 statistic reproduces from a clean clone in about a minute with no network, off 4.7 MB of committed extracts.</li>
         </ul>
         <a class="project-link" href="https://github.com/anaborne/kalshi-prop-calibration" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/kalshi-prop-calibration</a>
       </div>
@@ -652,7 +652,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Experience</h2>
-        <p class="eyebrow">June 2024 — Present</p>
+        <p class="eyebrow">May 2024 — June 2026</p>
       </div>
 
       <div class="job">
