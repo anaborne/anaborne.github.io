@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Immanuel Anaborne — Software Engineer</title>
+<title>Immanuel Anaborne · Software Engineer</title>
 <meta name="description" content="Software engineer building latency-sensitive trading infrastructure for prediction markets. Penn CS+English '26, based in New York.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -266,6 +266,17 @@
     font-size: clamp(1.7rem, 3vw, 2.2rem);
     font-weight:500;
   }
+  .how-built{
+    font-family:"Newsreader", serif;
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    line-height: 1.55;
+    margin: calc(-1 * clamp(10px, 2vw, 18px)) 0 clamp(28px, 4vw, 42px);
+    padding-left: 16px;
+    border-left: 2px solid var(--line);
+  }
 
   /* ============ PROJECT CARDS ============ */
   .project{
@@ -438,10 +449,10 @@
 
   <section class="hero">
     <div class="wrap">
-      <div class="status-line"><span class="pulse"></span>Available immediately — full-time roles in prediction markets &amp; sports trading</div>
+      <div class="status-line"><span class="pulse"></span>Available immediately for full-time roles in prediction markets &amp; sports trading</div>
       <p class="eyebrow" style="margin-bottom:14px;">Software Engineer · Prediction Markets &amp; Sports Trading</p>
       <h1 class="name font-display">Immanuel<br>Anaborne</h1>
-      <p class="hero-sub">I build the infrastructure that has to be right under a clock — order execution, cross-venue matching, and the discipline to publish a negative result instead of hiding it. <b>Penn CS + English '26</b>, based in New York.</p>
+      <p class="hero-sub">I build the infrastructure that has to be right under a clock: order execution, cross-venue matching, and the studies that decide whether a strategy deserves capital. The four studies published so far are all negative results, and each is published with the diagnostics that explain the loss. <b>Penn CS + English '26</b>, based in New York.</p>
       <div class="hero-actions">
         <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener">Download résumé (PDF)</a>
         <a class="btn" href="https://github.com/anaborne" target="_blank" rel="noopener">GitHub ↗</a>
@@ -480,6 +491,7 @@
         <p class="eyebrow">Public repositories, verified by running</p>
       </div>
 
+
       <div class="project">
         <div class="project-head">
           <div>
@@ -493,7 +505,7 @@
             <span class="badge">public extraction</span>
           </div>
         </div>
-        <p class="project-desc">A two-process trading system for Kalshi and Polymarket: a poller that decides <em>what</em> to do, and a pre-warmed executor that owns <em>how</em> — order count, time-in-force, self-trade prevention — connected over a Unix domain socket so unbounded decision work never contends with the event loop that actually submits an order.</p>
+        <p class="project-desc">A two-process trading system for Kalshi and Polymarket: a poller that decides <em>what</em> to do, and a pre-warmed executor that owns <em>how</em> (order count, time-in-force, self-trade prevention), connected over a Unix domain socket so unbounded decision work never contends with the event loop that actually submits an order.</p>
 
         <figure class="diagram">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 16 900 252" role="img" aria-label="The poller sends a non-blocking wake over a Unix domain socket; the executor acknowledges it before awaiting dispatch, then a kill switch and risk gate decide between posting the order to the exchange API and appending a rejected row to the telemetry database.">
@@ -540,20 +552,20 @@
               <text x="438" y="226" font-size="9.5" opacity="0.7" text-anchor="end">fire and forget</text>
             </g>
           </svg>
-          <figcaption>Every refusal writes a row. A halted system's inaction lands in the audit trail rather than being inferred from its absence.</figcaption>
+          <figcaption>Every refusal writes a row. A halted system's inaction lands in the audit trail, so nobody has to infer it from silence.</figcaption>
         </figure>
 
         <ul class="bullets">
-          <li>Chose uvloop over stock asyncio on measured evidence, not assumption: in the public benchmark, wake-send p99 drops from 1.35ms to 0.725ms — 46% faster.</li>
+          <li>Chose uvloop over stock asyncio on a measured benchmark. In the public repo, wake-send p99 drops from 1.35ms to 0.725ms, 46% faster.</li>
           <li>Designed an IDF-weighted inverted index that prices a full two-venue cross by cutting a ~1B-pair search space to ~63K scored candidates.</li>
-          <li>Built a settlement gate that blocks any pair whose payout terms differ or can't be verified — caught 33 false "identical" matches whose legs both resolve NO when a game ends in a draw.</li>
+          <li>Built a settlement gate that blocks any pair whose payout terms differ or can't be verified. It caught 33 false "identical" matches whose legs both resolve NO when a game ends in a draw.</li>
           <li>Root-caused a position-cap defect that had rejected 4,233 valid orders over 23 hours against zero open positions; replaced the counter-based estimate with live exchange-position reconciliation at no added API cost.</li>
-          <li>Runs strategy searches as pre-registered experiments — criterion, sample size, and stopping rule fixed before data — and kills each on its own evidence rather than re-cutting until it passes.</li>
+          <li>Runs strategy searches as pre-registered experiments, with criterion, sample size, and stopping rule fixed before data, and kills each on its own evidence.</li>
         </ul>
 
         <div class="caveat">
           <b>What the benchmark measures</b>
-          Both benchmarks in the repo generate their own data and need no credentials and no network: RSA-PSS signing timed against an ephemeral keypair, and a real poller &rarr; socket &rarr; executor round trip against a fake venue client. The numbers above the fold come out of that harness on a clean clone. End-to-end detect&rarr;fire on the live system needs a signed round trip to a demo account, so it is not published here.
+          Both benchmarks in the repo generate their own data and need no credentials and no network: RSA-PSS signing timed against an ephemeral keypair, and a real poller &rarr; socket &rarr; executor round trip against a fake venue client. The numbers above the fold come out of those benchmarks on a clean clone. End-to-end detect&rarr;fire on the live system needs a signed round trip to a demo account, so it is not published here.
         </div>
 
         <a class="project-link" href="https://github.com/anaborne/prediction-market-infra" target="_blank" rel="noopener">View source &amp; benchmarks → github.com/anaborne/prediction-market-infra</a>
@@ -594,11 +606,11 @@
             <span class="badge">publishes its loss</span>
           </div>
         </div>
-        <p class="project-desc">A walk-forward Elo model over the 2025 NFL season, graded against the de-vigged market moneyline. The constants were fixed before any result was read, and the places the model loses to the market are in the repository rather than trimmed out of it.</p>
+        <p class="project-desc">A walk-forward Elo model over the 2025 NFL season, graded against the de-vigged market moneyline. The constants were fixed before any result was read, and the places the model loses to the market are in the repository.</p>
         <ul class="bullets">
           <li>Walk-forward Elo over 272 games using only pre-game information, constants fixed before any result.</li>
           <li>Brier 0.224 against the market's 0.212, reported with a full calibration diagram including where it lost.</li>
-          <li>Where model and market disagree by more than 0.10 (n=57), the model's Brier is 0.2588 against the market's 0.2054 and its directional hit rate falls to 50.9% — the gap widens with disagreement instead of narrowing, which is the opposite of a tradeable edge.</li>
+          <li>Where model and market disagree by more than 0.10 (n=57), the model's Brier is 0.2588 against the market's 0.2054 and its directional hit rate falls to 50.9%. The gap widens with disagreement, which is the opposite of a tradeable edge.</li>
         </ul>
         <a class="project-link" href="https://github.com/anaborne/nfl-pricing-model" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/nfl-pricing-model</a>
       </div>
@@ -619,7 +631,7 @@
         <ul class="bullets">
           <li>Over 235,145 evaluated bucket-hours, the market mid-quote scored Brier 0.0772 against the model's 0.1739.</li>
           <li>Pulled 60,906 settled markets and 6.8M hourly observations at $0 cost, from unauthenticated public endpoints.</li>
-          <li>Kill criterion fixed in writing before any backtest data, triggered in every stratum, strategy killed rather than re-cut until it passed.</li>
+          <li>Kill criterion fixed in writing before any backtest data, triggered in every stratum, strategy killed on that evidence.</li>
         </ul>
         <a class="project-link" href="https://github.com/anaborne/kalshi-temperature-calibration" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/kalshi-temperature-calibration</a>
       </div>
@@ -639,9 +651,9 @@
         <p class="project-desc">Two venues listing the same game are not automatically listing the same contract. Before pricing anything across Kalshi and Polymarket US, this asks whether a matched pair settles on the same source, at the same time, under the same edge-case rules. On the sample drawn, none of them do.</p>
         <ul class="bullets">
           <li>74 game-moneyline pairs joined on league, date and teams from live open markets on both venues. 0 are settlement-identical: the source matches on 27 of 74, the settlement time on 0 of 74, the edge-case handling on 0 of 74.</li>
-          <li>One clause carries all 74. Kalshi settles a postponed game at last fair price within 48 hours; Polymarket US honours the actual result within two weeks of the original date. A game replayed three to thirteen days late cashes one leg at a price and pays the other on the outcome, which is an unhedged bet on the rulebooks rather than a hedge.</li>
+          <li>One clause carries all 74. Kalshi settles a postponed game at last fair price within 48 hours; Polymarket US honours the actual result within two weeks of the original date. A game replayed three to thirteen days late cashes one leg at a price and pays the other on the outcome, which is an unhedged bet on the rulebooks.</li>
           <li>The kill threshold of 30 settlement-identical pairs was fixed in writing before the sample was drawn. The sample came in at 74 against a 40-pair minimum, was not adjusted afterwards, and the study was stopped at its first gate for $0 and one day.</li>
-          <li>Reconciliation is printed rather than assumed: 115 Kalshi events retrieved, 111 parsed, 4 dropped with the reason named. A pull that reported 2,499 markets on a short page was caught by that same check and was low by a factor of 217.</li>
+          <li>Reconciliation is printed at every step. 115 Kalshi events retrieved, 111 parsed, 4 dropped with the reason named. A pull that reported 2,499 markets on a short page was caught by that same check and was low by a factor of 217.</li>
         </ul>
         <div class="caveat">
           <b>What a clone can and cannot check</b>
@@ -662,13 +674,13 @@
             <span class="badge">bugs published</span>
           </div>
         </div>
-        <p class="project-desc">A food-inventory app: photograph the groceries, get an editable inventory, get recipes from what is actually in the fridge. The part worth reading is the refactor. Pulling the logic that had been written twice into tested pure functions turned up five live defects, and the repository documents them instead of the feature list.</p>
+        <p class="project-desc">A food-inventory app: photograph the groceries, get an editable inventory, get recipes from what is actually in the fridge. The part worth reading is the refactor. Pulling the logic that had been written twice into tested pure functions turned up five live defects, and the repository documents them.</p>
         <ul class="bullets">
           <li>Every expiration date read a day early west of UTC. A bare <code>YYYY-MM-DD</code> parses as UTC midnight per the spec and was compared against a local clock, so in New York an item expiring today displayed as expired from 20:00 the evening before. CI now runs the suite under UTC, America/New_York, Asia/Tokyo and Pacific/Kiritimati, because a green run in UTC alone would not have caught it.</li>
           <li>The day arithmetic mutated the value it then compared against, so the branch on the following line was correct only by accident and only while those two lines stayed in that order.</li>
           <li>The recipe-line parser matched integer quantities only, so <code>Chicken Thighs (1.5 lb)</code> fell through to the branch meant for salt and pepper and deducted 1 from the user's inventory instead of 1.5. A wrong write, silently.</li>
           <li>The <code>next/image</code> allowlist for generated recipe images sat in <code>next.config.js</code> while an empty <code>next.config.ts</code> shadowed it, so Next 15 ignored the file and every recipe illustration threw.</li>
-          <li>28 tests over pure functions, no network, database, API key or component rendering, running in about 150ms. Typecheck and lint are clean gates rather than steps that have always been red.</li>
+          <li>28 tests over pure functions, no network, database, API key or component rendering, running in about 150ms. Typecheck and lint are clean gates.</li>
         </ul>
         <a class="project-link" href="https://github.com/anaborne/freshli" target="_blank" rel="noopener">View source &amp; tests → github.com/anaborne/freshli</a>
       </div>
@@ -685,7 +697,7 @@
             <span class="badge">live-Drive verified</span>
           </div>
         </div>
-        <p class="project-desc">An MCP server that gives an AI agent in-place writes to Google Drive files, guarded by optimistic-concurrency revision tokens that refuse a stale write instead of silently forking the document.</p>
+        <p class="project-desc">An MCP server that gives an AI agent in-place writes to Google Drive files, guarded by optimistic-concurrency revision tokens that refuse a stale write. A stale write would otherwise fork the document silently.</p>
         <ul class="bullets">
           <li>Verified with 55 unit tests plus a 41-check suite that runs against a live Drive account.</li>
           <li>MIT-licensed and published; CI green on Node 18, 20, and 22.</li>
@@ -700,14 +712,14 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Experience</h2>
-        <p class="eyebrow">May 2024 — June 2026</p>
+        <p class="eyebrow">May 2024 to June 2026</p>
       </div>
 
       <div class="job">
         <div class="job-meta">
           <div class="role">Data Engineering<br>Research Assistant</div>
           <div class="org">Wharton Accounting Department</div>
-          <div class="when">JUN 2025 – JUN 2026<br>PHILADELPHIA, PA</div>
+          <div class="when">JUN 2025 to JUN 2026<br>PHILADELPHIA, PA</div>
         </div>
         <ul class="bullets">
           <li>Cut manual disclosure-classification effort 50% with a RAG pipeline (OpenAI API) mapping unstructured corporate filings to trade codes, plus an event-driven ingestion layer for asynchronous filing updates.</li>
@@ -720,7 +732,7 @@
         <div class="job-meta">
           <div class="role">Software Engineer<br>Intern</div>
           <div class="org">GoodRun</div>
-          <div class="when">MAY 2024 – AUG 2024<br>NEW YORK, NY</div>
+          <div class="when">MAY 2024 to AUG 2024<br>NEW YORK, NY</div>
         </div>
         <ul class="bullets">
           <li>Built and shipped an in-house React feedback tool that replaced a paid third-party vendor, cutting license cost and giving the team direct ownership of the data pipeline.</li>
@@ -747,8 +759,8 @@
         <div class="bg-card">
           <div class="role">U.S. National Team Training Partner</div>
           <div class="org">Short Track Speed Skating · US Speedskating</div>
-          <div class="when">2019 – 2022</div>
-          <p class="note">Named twice to the U.S. Junior Development Team; placed 15th nationally on two occasions. Competing at a national level under a stopwatch is the same discipline this résumé is otherwise about — decide fast, on evidence, with no do-overs.</p>
+          <div class="when">2019 to 2022</div>
+          <p class="note">Named twice to the U.S. Junior Development Team; placed 15th nationally on two occasions. Competing under a stopwatch at a national level built the habit of deciding fast, on evidence, with no do-overs.</p>
         </div>
       </div>
 
@@ -777,7 +789,7 @@
         <a href="resume.pdf" target="_blank" rel="noopener">résumé.pdf</a>
       </div>
     </div>
-    <p class="foot-note">This page is a static file in a public repository — no build step, no analytics, no tracking. Everything on it is runnable, sourced, or downloadable; nothing is asserted that the linked repos or the résumé don't already say.</p>
+    <p class="foot-note">This page is a static file in a public repository. No build step, no analytics, no tracking. Everything on it is runnable, sourced, or downloadable; nothing is asserted that the linked repos or the résumé don't already say.</p>
   </div>
 </footer>
 
