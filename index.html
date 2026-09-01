@@ -763,6 +763,29 @@
         <a class="project-link" href="https://github.com/anaborne/gdrive-write-mcp" target="_blank" rel="noopener">View source → github.com/anaborne/gdrive-write-mcp</a>
       </div>
 
+      <div class="project">
+        <div class="project-head">
+          <div>
+            <div class="project-title">Gmail Multi-Account MCP</div>
+            <div class="project-stack">TypeScript &middot; Node.js &middot; Gmail API &middot; MCP</div>
+          </div>
+          <div class="badges">
+            <span class="badge">MIT</span>
+            <span class="badge">CI: Node 18/20/22</span>
+            <span class="badge">68 tests</span>
+            <span class="badge">sending off by default</span>
+          </div>
+        </div>
+        <p class="project-desc">An MCP server that holds several Gmail accounts open at the same time. A connector authenticates one account, so reaching a second means disconnecting and reconnecting or forwarding one inbox into the other, and both lose the distinction that decided to keep them apart.</p>
+        <ul class="bullets">
+          <li>An account label is checked rather than trusted. On an account's first use the server calls <code>users.getProfile</code> and compares the address it was configured with; a mismatch disables that account and names both addresses. The setup error this catches is pasting the second token under the first label, which otherwise produces a server that works and reads the wrong inbox.</li>
+          <li>Reads and writes are deliberately asymmetric. A read may name any mailbox and says in its header which one it used. A write always names its own account, never inherits the active one, and is refused when the two differ unless the call passes <code>confirmAccountSwitch</code>.</li>
+          <li>19 tools, 17 of them when sending is off. With <code>GMAIL_ALLOW_SEND</code> unset the send tools are never registered, so the tool list a client sees contains no way to put mail on the wire, and only the exact string <code>true</code> turns them on.</li>
+          <li>Subject, address and threading values are rejected if they carry CR or LF before the message is assembled, so text arriving in an email body cannot add its own <code>Bcc</code>. 68 tests run from a clean clone with no network and no credentials, green on Node 18, 20 and 22.</li>
+        </ul>
+        <a class="project-link" href="https://github.com/anaborne/gmail-multi-mcp" target="_blank" rel="noopener">View source &rarr; github.com/anaborne/gmail-multi-mcp</a>
+      </div>
+
     </div>
   </section>
 
