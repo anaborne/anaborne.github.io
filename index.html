@@ -603,6 +603,35 @@
       <div class="project">
         <div class="project-head">
           <div>
+            <div class="project-title">Settlement Reconciliation</div>
+            <div class="project-stack">dbt · DuckDB · Parquet · Python 3.12 · sqlfluff · GitHub Actions</div>
+          </div>
+          <div class="badges">
+            <span class="badge">82 data tests</span>
+            <span class="badge">15 of 15 controls falsified</span>
+            <span class="badge">enforced output contracts</span>
+            <span class="badge">dbt docs on Pages</span>
+          </div>
+        </div>
+        <p class="project-desc">A dbt project that joins a forward test's trade decision ledger to the Kalshi settlement feed that should explain it, classifies every decision the feed has not settled, and fails the build when the unexplained population grows past the size the repository records.</p>
+        <ul class="bullets">
+          <li>281 decisions across 12 runs against a 263-row settlement feed, a 93.59% match rate. The 18 that do not settle are split into 11 unexplained, 6 still inside the feed's own lag window, and 1 market the exchange finalised without a binary result.</li>
+          <li>The settlement window is computed from the feed rather than set as a constant. The newest load is the watermark and the largest close-to-load lag across the 263 settled rows, 20.2 hours, is how far back a decision can still be pending. The 11 unexplained rows sit more than five times that lag before the window opens.</li>
+          <li>Every control is proven to fail when its fault is injected. <code>verify_controls.py</code> copies the fixture, breaks one thing, rebuilds the models, and asserts that one control catches it. 15 of 15, as its own CI job on every push.</li>
+          <li>One control is published as inert rather than counted. A relationships test on the join only sees rows where the join matched, so it cannot fail, and a rowcount guard is kept as the falsifiable check in its place.</li>
+          <li>The one correlation that survives is confounded and says so. All 11 unexplained rows fall in the first 21 decisions under the early rulesets, and ruleset moves with collection time across those rows, so no cause is asserted.</li>
+          <li>44 KB of parquet is committed, so a clone runs the whole project, the tests, and the mutation harness with no warehouse account and no access to the private source.</li>
+        </ul>
+        <div class="caveat">
+          <b>What is not diagnosed</b>
+          The 11 unexplained rows are not explained. The extract does not contain the answer and none is asserted. The reverse break, a settlement with no decision, is 0 and cannot be anything else on this data, because the source enforces that key. The models run on demand and nothing here is a live pipeline.
+        </div>
+        <a class="project-link" href="https://github.com/anaborne/settlement-reconciliation" target="_blank" rel="noopener">View source &amp; docs → github.com/anaborne/settlement-reconciliation</a>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <div>
             <div class="project-title">Kalshi Prop Calibration</div>
             <div class="project-stack">Python · numpy · scipy · pandas</div>
           </div>
