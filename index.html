@@ -559,7 +559,6 @@
         <ul class="bullets">
           <li>Chose uvloop over stock asyncio on a measured benchmark. In the public repo, wake-send p99 drops from 1.35ms to 0.725ms, 46% faster.</li>
           <li>Designed an IDF-weighted inverted index that prices a full two-venue cross by cutting a ~1B-pair search space to ~63K scored candidates.</li>
-          <li>Built a settlement gate that blocks any pair whose payout terms differ or can't be verified. It caught 33 false "identical" matches whose legs both resolve NO when a game ends in a draw.</li>
           <li>Root-caused a position-cap defect that had rejected 4,233 valid orders over 23 hours against zero open positions; replaced the counter-based estimate with live exchange-position reconciliation at no added API cost.</li>
           <li>Runs strategy searches as pre-registered experiments, with criterion, sample size, and stopping rule fixed before data, and kills each on its own evidence.</li>
         </ul>
