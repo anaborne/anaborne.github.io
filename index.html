@@ -6,6 +6,7 @@
 <title>Immanuel Anaborne · Software Engineer</title>
 <meta name="description" content="Software engineer building latency-sensitive trading infrastructure for prediction markets. Penn CS+English '26, based in New York.">
 <meta name="google-site-verification" content="6TrEfixDXS9pkcmnFZYlicMlR94AlLERTAqQiomKwWE">
+<meta name="color-scheme" content="light dark">
 <link rel="canonical" href="https://anaborne.github.io/">
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Immanuel Anaborne · Software Engineer">
@@ -18,6 +19,10 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Immanuel Anaborne","url":"https://anaborne.github.io/","email":"mailto:immanuel.anaborne@gmail.com","jobTitle":"Software Engineer","address":{"@type":"PostalAddress","addressLocality":"New York","addressRegion":"NY","addressCountry":"US"},"alumniOf":{"@type":"CollegeOrUniversity","name":"University of Pennsylvania"},"sameAs":["https://github.com/anaborne","https://www.linkedin.com/in/anaborne"]}
 </script>
+<script>
+  /* Set before first paint so a stored theme never flashes the other palette. */
+  try{ var t = localStorage.getItem("theme"); if(t) document.documentElement.setAttribute("data-theme", t); }catch(e){}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -29,14 +34,16 @@
     --surface-2: #E4E9EC;
     --ink: #12181C;
     --ink-soft: #4B5A63;
-    --ink-faint: #7C8A91;
+    --ink-faint: #616F76;
     --line: #C9D3D8;
     --line-strong: #A9B7BD;
-    --accent: #B96A21;
+    --accent: #A85E1B;
     --accent-ink: #FFFFFF;
     --accent-2: #1C6E8C;
     --shadow: 0 1px 2px rgba(18,24,28,0.06), 0 8px 24px -12px rgba(18,24,28,0.18);
     --radius: 3px;
+    --grid-alpha: 0.5;
+    --nav-h: 57px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -45,13 +52,14 @@
       --surface-2: #1D262B;
       --ink: #E7EDEF;
       --ink-soft: #93A3AA;
-      --ink-faint: #647177;
+      --ink-faint: #7A878E;
       --line: #2A363B;
       --line-strong: #3B4A50;
       --accent: #E0954A;
       --accent-ink: #12181C;
       --accent-2: #5CC2E6;
       --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+      --grid-alpha: 0.75;
     }
   }
   :root[data-theme="dark"]{
@@ -60,13 +68,14 @@
     --surface-2: #1D262B;
     --ink: #E7EDEF;
     --ink-soft: #93A3AA;
-    --ink-faint: #647177;
+    --ink-faint: #7A878E;
     --line: #2A363B;
     --line-strong: #3B4A50;
     --accent: #E0954A;
     --accent-ink: #12181C;
     --accent-2: #5CC2E6;
     --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    --grid-alpha: 0.75;
   }
 
   /* ============ RESET / BASE ============ */
@@ -86,14 +95,14 @@
   a{ color: inherit; }
   img,svg{ max-width:100%; display:block; }
   ::selection{ background: var(--accent); color: var(--accent-ink); }
-  a:focus-visible, button:focus-visible{
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, [tabindex]:focus-visible{
     outline: 2px solid var(--accent-2);
     outline-offset: 3px;
   }
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
   }
-  html{ scroll-behavior: smooth; }
+  html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
 
   .font-display{ font-family: "Newsreader", ui-serif, Georgia, serif; }
   .font-mono{ font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace; }
@@ -114,12 +123,43 @@
     padding-inline: clamp(20px, 5vw, 48px);
   }
 
+  .visually-hidden{
+    position:absolute; width:1px; height:1px; margin:-1px;
+    padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+  }
+  .skip-link{
+    position:absolute; left:12px; top:-64px; z-index:100;
+    background: var(--accent-2); color: var(--bg);
+    font-family:"IBM Plex Mono", monospace; font-size:0.8rem; font-weight:600;
+    padding:10px 14px; border-radius: var(--radius); text-decoration:none;
+    transition: top .15s ease;
+  }
+  .skip-link:focus{ top:12px; }
+
+  /* Blueprint grid. Same --line token as every border on the page, faded out down-page. */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 72px 72px;
+    opacity: var(--grid-alpha);
+    -webkit-mask-image: radial-gradient(130% 70% at 50% -10%, #000 0%, transparent 68%);
+            mask-image: radial-gradient(130% 70% at 50% -10%, #000 0%, transparent 68%);
+  }
+  body > header, body > main, body > footer{ position: relative; z-index: 1; }
+
   /* ============ NAV ============ */
   header.site{
-    position: sticky; top:0; z-index: 20;
+    position: sticky; top:0; z-index: 30;
     background: color-mix(in srgb, var(--bg) 88%, transparent);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
+  }
+  .progress{
+    position:absolute; left:0; bottom:-1px; height:2px; width:100%;
+    transform: scaleX(0); transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
   }
   .nav-inner{
     display:flex; align-items:center; justify-content:space-between;
@@ -144,8 +184,13 @@
     font-family:"IBM Plex Mono", monospace;
     font-size: 0.8rem;
   }
-  nav.links a{ text-decoration:none; color: var(--ink-soft); border-bottom: 1px solid transparent; padding-bottom:2px; }
+  nav.links a{
+    text-decoration:none; color: var(--ink-soft);
+    border-bottom: 1px solid transparent; padding-bottom:2px;
+    transition: color .18s ease, border-color .18s ease;
+  }
   nav.links a:hover{ color: var(--ink); border-color: var(--line-strong); }
+  nav.links a[aria-current="true"]{ color: var(--ink); border-color: var(--accent-2); }
   .btn{
     display:inline-flex; align-items:center; gap:8px;
     font-family:"IBM Plex Mono", monospace;
@@ -159,16 +204,56 @@
     background: var(--surface);
     transition: border-color .15s ease, transform .15s ease, background .15s ease;
     white-space: nowrap;
+    cursor: pointer;
   }
   .btn:hover{ border-color: var(--ink-faint); transform: translateY(-1px); }
   .btn.primary{
     background: var(--accent); color: var(--accent-ink); border-color: var(--accent);
   }
   .btn.primary:hover{ filter: brightness(1.06); }
-  .nav-cta{ display:flex; gap:10px; }
+  .nav-cta{ display:flex; align-items:center; gap:10px; }
   .nav-cta .btn span.full{ display:inline; }
-  @media (max-width: 720px){
-    nav.links{ display:none; }
+
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:38px; height:38px; padding:0;
+    border:1px solid var(--line-strong); border-radius: var(--radius);
+    background: var(--surface); color: var(--ink-soft);
+    cursor:pointer;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .icon-btn:hover{ color: var(--ink); border-color: var(--ink-faint); }
+  .icon-btn svg{ width:17px; height:17px; }
+  .icon-btn .moon{ display:none; }
+  :root[data-theme="dark"] .icon-btn .moon{ display:block; }
+  :root[data-theme="dark"] .icon-btn .sun{ display:none; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .icon-btn .moon{ display:block; }
+    :root:not([data-theme="light"]) .icon-btn .sun{ display:none; }
+  }
+
+  .kbd-hint{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:"IBM Plex Mono", monospace; font-size:0.74rem;
+    color: var(--ink-faint);
+    background: var(--surface);
+    border:1px solid var(--line); border-radius: var(--radius);
+    padding: 8px 10px; cursor:pointer;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .kbd-hint:hover{ color: var(--ink); border-color: var(--line-strong); }
+  kbd{
+    font-family:"IBM Plex Mono", monospace; font-size:0.7rem;
+    border:1px solid var(--line-strong); border-bottom-width:2px;
+    border-radius:3px; padding:1px 5px; color: var(--ink-soft);
+    background: var(--bg);
+  }
+  @media (max-width: 980px){ .kbd-hint .kbd-label{ display:none; } }
+  @media (max-width: 860px){ nav.links{ display:none; } }
+  @media (max-width: 560px){
+    .kbd-hint{ display:none; }
+    .nav-cta .btn span.full{ font-size:0; }
+    .nav-cta .btn span.full::after{ content:"Résumé"; font-size:0.78rem; }
   }
 
   /* ============ HERO ============ */
@@ -219,6 +304,10 @@
     margin-top: 30px;
     display:flex; flex-wrap:wrap; gap:10px;
   }
+  .copy-btn .label-done{ display:none; }
+  .copy-btn.done{ border-color: var(--accent-2); color: var(--accent-2); }
+  .copy-btn.done .label-idle{ display:none; }
+  .copy-btn.done .label-done{ display:inline; }
 
   /* stat ticker */
   .ticker{
@@ -234,8 +323,18 @@
   .stat{
     padding: 18px 18px 16px;
     border-left: 1px solid var(--line);
+    position:relative;
   }
   .stat:first-child{ border-left:none; }
+  .stat::after{
+    content:""; position:absolute; left:0; bottom:0; height:2px; width:100%;
+    background: var(--accent-2); transform: scaleX(0); transform-origin: 0 50%;
+    transition: transform .5s cubic-bezier(.2,.7,.3,1);
+  }
+  .ticker.in-view .stat::after{ transform: scaleX(1); }
+  .ticker.in-view .stat:nth-child(2)::after{ transition-delay: .08s; }
+  .ticker.in-view .stat:nth-child(3)::after{ transition-delay: .16s; }
+  .ticker.in-view .stat:nth-child(4)::after{ transition-delay: .24s; }
   .stat .k{
     font-family:"IBM Plex Mono", monospace;
     font-size: 1.5rem;
@@ -279,6 +378,90 @@
     font-size: clamp(1.7rem, 3vw, 2.2rem);
     font-weight:500;
   }
+  @media (max-width: 640px){
+    .section-head{ flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+
+  /* ============ FILTER RAIL ============ */
+  .section-head:has(+ .filterbar){ margin-bottom: 4px; }
+  .filterbar{
+    position: sticky; top: var(--nav-h); z-index: 20;
+    margin-bottom: 26px;
+    padding-block: 14px;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .filter-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .search-field{
+    position:relative; display:flex; align-items:center;
+    flex: 1 1 260px; min-width: 180px;
+  }
+  .search-field svg{
+    position:absolute; left:11px; width:15px; height:15px;
+    color: var(--ink-faint); pointer-events:none;
+  }
+  .filter-input{
+    width:100%;
+    font-family:"IBM Plex Mono", monospace; font-size:0.82rem;
+    color: var(--ink); background: var(--surface);
+    border:1px solid var(--line); border-radius: var(--radius);
+    padding: 10px 34px 10px 33px;
+    transition: border-color .15s ease;
+  }
+  .filter-input::placeholder{ color: var(--ink-faint); }
+  .filter-input:hover{ border-color: var(--line-strong); }
+  .clear-search{
+    position:absolute; right:6px;
+    width:24px; height:24px; padding:0; display:none;
+    align-items:center; justify-content:center;
+    background:none; border:none; cursor:pointer; color: var(--ink-faint);
+    border-radius: var(--radius);
+  }
+  .clear-search:hover{ color: var(--ink); }
+  .search-field.has-value .clear-search{ display:flex; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.76rem;
+    padding: 6px 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--ink-soft);
+    background: var(--surface);
+  }
+  button.chip{
+    cursor:pointer;
+    min-height: 34px;
+    transition: color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  button.chip:hover{ color: var(--ink); border-color: var(--line-strong); }
+  button.chip[aria-pressed="true"]{
+    color: var(--accent-ink); background: var(--accent); border-color: var(--accent);
+  }
+  .filter-meta{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:10px;
+    margin-top: 11px;
+    font-family:"IBM Plex Mono", monospace; font-size:0.72rem;
+    color: var(--ink-faint);
+  }
+  .link-btn{
+    font-family:"IBM Plex Mono", monospace; font-size:0.72rem;
+    background:none; border:none; padding:10px 0; cursor:pointer;
+    color: var(--accent-2);
+    border-bottom:1px solid transparent;
+  }
+  .link-btn:hover{ border-color: var(--accent-2); }
+  .empty-state{
+    display:none;
+    padding: 40px 24px; text-align:center;
+    border:1px dashed var(--line-strong); border-radius: var(--radius);
+    color: var(--ink-soft);
+  }
+  .empty-state p{ font-size:0.94rem; }
+  .empty-state .link-btn{ margin-top:12px; font-size:0.8rem; }
+  #work.no-results .empty-state{ display:block; }
 
   /* ============ PROJECT CARDS ============ */
   .project{
@@ -287,7 +470,21 @@
     border-radius: var(--radius);
     padding: clamp(22px, 4vw, 36px);
     box-shadow: var(--shadow);
+    position: relative;
+    transition: border-color .2s ease, transform .2s ease;
   }
+  .project::before,
+  .project::after{
+    content:""; position:absolute; width:11px; height:11px;
+    border: 1px solid var(--accent-2);
+    opacity:0; transition: opacity .2s ease;
+  }
+  .project::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .project::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+  .project:hover{ border-color: var(--line-strong); }
+  .project:hover::before, .project:hover::after,
+  .project:focus-within::before, .project:focus-within::after{ opacity:1; }
+  .project[hidden]{ display:none; }
   .project + .project{ margin-top: 24px; }
   .project-head{
     display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap: 14px;
@@ -321,6 +518,31 @@
     font-size: 0.98rem;
     margin-bottom: 20px;
   }
+
+  /* ============ DISCLOSURE ============ */
+  details.evidence{ margin-bottom: 4px; }
+  details.evidence > summary{
+    list-style:none; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.76rem; font-weight:600;
+    letter-spacing:0.04em; text-transform:uppercase;
+    color: var(--ink-faint);
+    border:1px solid var(--line); border-radius: var(--radius);
+    padding: 8px 12px;
+    min-height: 36px;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  details.evidence > summary::-webkit-details-marker{ display:none; }
+  details.evidence > summary:hover{ color: var(--ink); border-color: var(--line-strong); }
+  details.evidence > summary .chev{
+    width:12px; height:12px; transition: transform .2s ease; color: var(--accent-2);
+  }
+  details.evidence[open] > summary{ color: var(--ink); border-color: var(--line-strong); }
+  details.evidence[open] > summary .chev{ transform: rotate(90deg); }
+  details.evidence > summary .count{ color: var(--ink-faint); font-weight:400; text-transform:none; letter-spacing:0; }
+  .evidence-body{ padding-top: 22px; }
+
   figure.diagram{
     margin: 0 0 24px;
     padding: 18px clamp(6px,2vw,18px);
@@ -339,9 +561,18 @@
   figure.diagram figcaption{
     margin-top: 12px;
     font-size: 0.78rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     text-align:center;
   }
+  /* A packet crosses the hot path only while the diagram is on screen. Dashes elsewhere
+     in this figure mean "fire and forget", so the overlay rides above the solid arrows. */
+  figure.diagram svg .hotpath{ stroke: var(--accent-2); stroke-width: 2.5; stroke-linecap: round; opacity: 0; }
+  .diagram.live .hotpath{ opacity: 0.95; stroke-dasharray: 7 91; animation: packet 2.6s linear infinite; }
+  @keyframes packet{ to{ stroke-dashoffset: -98; } }
+  @media (prefers-reduced-motion: reduce){
+    .diagram.live .hotpath{ opacity: 0; animation: none; }
+  }
+
   ul.bullets{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px; }
   ul.bullets li{
     position:relative; padding-left: 20px;
@@ -351,6 +582,11 @@
   ul.bullets li::before{
     content:"›"; position:absolute; left:0; top:0;
     color: var(--accent-2); font-family:"IBM Plex Mono", monospace; font-weight:600;
+  }
+  code{
+    font-family:"IBM Plex Mono", monospace; font-size:0.86em;
+    background: var(--surface-2); border:1px solid var(--line);
+    border-radius:2px; padding:0 4px;
   }
   .caveat{
     margin-top: 20px;
@@ -392,6 +628,12 @@
     display:grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,4vw,48px);
   }
   @media (max-width: 760px){ .bg-grid{ grid-template-columns: 1fr; } }
+  .bg-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 26px);
+  }
   .bg-card .role{ font-weight:600; font-size:1.02rem; }
   .bg-card .org{ margin-top:2px; color: var(--ink-soft); font-size:0.9rem; }
   .bg-card .when{ margin-top:8px; font-family:"IBM Plex Mono", monospace; font-size:0.74rem; color: var(--ink-faint); }
@@ -399,16 +641,58 @@
 
   .skills{ margin-top: clamp(36px,5vw,56px); }
   .skills .eyebrow{ margin-bottom: 14px; }
-  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
-  .chip{
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 0.76rem;
-    padding: 6px 11px;
-    border: 1px solid var(--line);
+
+  /* ============ COMMAND PALETTE ============ */
+  dialog.palette{
+    width: min(560px, calc(100vw - 32px));
+    max-height: min(60vh, 520px);
+    padding: 0;
+    margin-top: 12vh;
+    border: 1px solid var(--line-strong);
     border-radius: var(--radius);
-    color: var(--ink-soft);
     background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 24px 64px -20px rgba(0,0,0,0.45);
+    overflow: hidden;
   }
+  dialog.palette::backdrop{ background: rgba(8,12,14,0.55); backdrop-filter: blur(3px); }
+  .palette-field{ display:flex; align-items:center; gap:10px; padding: 14px 16px; border-bottom:1px solid var(--line); }
+  .palette-field svg{ width:16px; height:16px; color: var(--ink-faint); flex:none; }
+  .palette-field input{
+    flex:1; border:none; background:none; outline:none;
+    font-family:"IBM Plex Mono", monospace; font-size:0.92rem; color: var(--ink);
+  }
+  .palette-field input::placeholder{ color: var(--ink-faint); }
+  .palette-list{ list-style:none; margin:0; padding:6px; overflow-y:auto; max-height: calc(60vh - 108px); }
+  .palette-list li{
+    display:flex; align-items:center; gap:12px;
+    padding: 10px 12px; border-radius: var(--radius);
+    font-size: 0.88rem; cursor:pointer;
+    min-height: 44px;
+  }
+  .palette-list li .p-kind{
+    font-family:"IBM Plex Mono", monospace; font-size:0.64rem;
+    letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--ink-faint); flex:none; width:66px;
+  }
+  .palette-list li .p-name{ flex:1; }
+  .palette-list li[aria-selected="true"]{ background: var(--surface-2); }
+  .palette-list li[aria-selected="true"] .p-kind{ color: var(--accent-2); }
+  .palette-empty{ padding: 26px 16px; text-align:center; color: var(--ink-faint); font-size:0.86rem; }
+  .palette-foot{
+    display:flex; gap:16px; flex-wrap:wrap;
+    padding: 10px 16px; border-top:1px solid var(--line);
+    font-family:"IBM Plex Mono", monospace; font-size:0.68rem; color: var(--ink-faint);
+    background: var(--bg);
+  }
+
+  /* ============ REVEAL ============ */
+  .reveal{ opacity:0; transform: translateY(14px); }
+  .reveal.shown{ opacity:1; transform:none; transition: opacity .45s ease, transform .45s cubic-bezier(.2,.7,.3,1); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; }
+  }
+  .no-js .reveal{ opacity:1; transform:none; }
 
   /* ============ FOOTER ============ */
   footer{
@@ -430,21 +714,29 @@
   }
 </style>
 </head>
-<body>
+<body class="no-js">
+
+<a class="skip-link" href="#work">Skip to selected work</a>
 
 <header class="site">
   <div class="wrap nav-inner">
     <a class="mark" href="#top"><span class="dot"></span>IMMANUEL ANABORNE</a>
-    <nav class="links">
+    <nav class="links" aria-label="Sections">
       <a href="#work">Work</a>
       <a href="#experience">Experience</a>
       <a href="#background">Background</a>
     </nav>
     <div class="nav-cta">
+      <button type="button" class="kbd-hint" id="palette-open" aria-haspopup="dialog"><span class="kbd-label">Jump to</span><kbd>⌘</kbd><kbd>K</kbd></button>
+      <button type="button" class="icon-btn" id="theme-toggle" aria-label="Switch to dark theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
       <a class="btn" href="mailto:immanuel.anaborne@gmail.com">Email</a>
       <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener"><span class="full">Résumé (PDF)</span></a>
     </div>
   </div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
 </header>
 
 <main id="top">
@@ -459,9 +751,10 @@
         <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener">Download résumé (PDF)</a>
         <a class="btn" href="https://github.com/anaborne" target="_blank" rel="noopener">GitHub ↗</a>
         <a class="btn" href="https://linkedin.com/in/anaborne" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <button type="button" class="btn copy-btn" id="copy-email" data-email="immanuel.anaborne@gmail.com"><span class="label-idle">Copy email</span><span class="label-done">Copied ✓</span></button>
       </div>
 
-      <div class="ticker">
+      <div class="ticker" id="ticker">
         <div class="stat">
           <div class="k">1.35 &rarr; 0.725<span style="font-size:0.85rem;">ms</span></div>
           <div class="l">Wake-send p99, asyncio &rarr; uvloop</div>
@@ -473,12 +766,12 @@
           <div class="s">IDF-weighted inverted index</div>
         </div>
         <div class="stat">
-          <div class="k">391</div>
+          <div class="k"><span data-countup="391">391</span></div>
           <div class="l">Offline tests, public repo</div>
           <div class="s">mypy --strict · ruff clean</div>
         </div>
         <div class="stat">
-          <div class="k">60,000+</div>
+          <div class="k"><span data-countup="60000">60,000</span>+</div>
           <div class="l">Filings processed, Wharton RA</div>
           <div class="s">async ingestion, Pydantic-validated</div>
         </div>
@@ -493,7 +786,41 @@
         <p class="eyebrow">Public repositories, verified by running</p>
       </div>
 
-      <div class="project">
+      <div class="filterbar">
+        <div class="filter-row">
+          <div class="search-field" id="search-field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <label class="visually-hidden" for="project-search">Filter projects by keyword</label>
+            <input class="filter-input" id="project-search" type="search" autocomplete="off" placeholder="Filter projects…">
+            <button type="button" class="clear-search" id="clear-search" aria-label="Clear the keyword filter">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+          <div class="chip-row" role="group" aria-label="Filter projects by category">
+            <button type="button" class="chip" data-filter="" aria-pressed="true">All</button>
+            <button type="button" class="chip" data-filter="infra" aria-pressed="false">Trading infra</button>
+            <button type="button" class="chip" data-filter="research" aria-pressed="false">Research</button>
+            <button type="button" class="chip" data-filter="data" aria-pressed="false">Data</button>
+            <button type="button" class="chip" data-filter="apps" aria-pressed="false">Apps &amp; tooling</button>
+            <button type="button" class="chip" data-filter="python" aria-pressed="false">Python</button>
+            <button type="button" class="chip" data-filter="cpp" aria-pressed="false">C++</button>
+            <button type="button" class="chip" data-filter="ts" aria-pressed="false">TypeScript</button>
+          </div>
+        </div>
+        <div class="filter-meta">
+          <span id="filter-count" role="status" aria-live="polite">10 of 10 projects</span>
+          <button type="button" class="link-btn" id="expand-all" aria-expanded="false">Expand all evidence</button>
+        </div>
+      </div>
+
+      <div class="empty-state">
+        <p>No project matches that filter.</p>
+        <button type="button" class="link-btn" data-reset>Clear filters and show all 10</button>
+      </div>
+
+      <div id="project-list">
+
+      <article class="project reveal" data-tags="infra python">
         <div class="project-head">
           <div>
             <div class="project-title">Kalshi / Polymarket Trading Infrastructure</div>
@@ -507,6 +834,10 @@
           </div>
         </div>
         <p class="project-desc">A two-process trading system for Kalshi and Polymarket: a poller that decides <em>what</em> to do, and a pre-warmed executor that owns <em>how</em> (order count, time-in-force, self-trade prevention), connected over a Unix domain socket so unbounded decision work never contends with the event loop that actually submits an order.</p>
+
+        <details class="evidence" open>
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">architecture, 4 findings, 1 caveat</span></summary>
+          <div class="evidence-body">
 
         <figure class="diagram">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 16 900 252" role="img" aria-label="The poller sends a non-blocking wake over a Unix domain socket; the executor acknowledges it before awaiting dispatch, then a kill switch and risk gate decide between posting the order to the exchange API and appending a rejected row to the telemetry database.">
@@ -525,6 +856,7 @@
               <path d="M308,140 H382" marker-end="url(#pmi-a)"/>
               <path d="M510,140 H584" marker-end="url(#pmi-a)"/>
               <path d="M696,140 H770" marker-end="url(#pmi-a)"/>
+              <path class="hotpath" d="M122,140 H584 M696,140 H770"/>
               <path class="ack-path" stroke="currentColor" d="M446,112 V54 H72 V112" marker-end="url(#pmi-a2)"/>
               <path class="refuse-path" stroke="currentColor" d="M640,178 V212" marker-end="url(#pmi-ar)"/>
               <rect class="refuse-path" stroke="currentColor" x="510" y="212" width="260" height="40" rx="2" fill="none"/>
@@ -568,10 +900,13 @@
           Both benchmarks in the repo generate their own data and need no credentials and no network: RSA-PSS signing timed against an ephemeral keypair, and a real poller &rarr; socket &rarr; executor round trip against a fake venue client. The numbers above the fold come out of those benchmarks on a clean clone. End-to-end detect&rarr;fire on the live system needs a signed round trip to a demo account, so it is not published here.
         </div>
 
-        <a class="project-link" href="https://github.com/anaborne/prediction-market-infra" target="_blank" rel="noopener">View source &amp; benchmarks → github.com/anaborne/prediction-market-infra</a>
-      </div>
+          </div>
+        </details>
 
-      <div class="project">
+        <a class="project-link" href="https://github.com/anaborne/prediction-market-infra" target="_blank" rel="noopener">View source &amp; benchmarks → github.com/anaborne/prediction-market-infra</a>
+      </article>
+
+      <article class="project reveal" data-tags="infra cpp">
         <div class="project-head">
           <div>
             <div class="project-title">Executor Hot Path in C++</div>
@@ -585,6 +920,9 @@
           </div>
         </div>
         <p class="project-desc">The executor process from the trading system above, rewritten in C++20 against the same wire protocol, so the unmodified Python poller drives either one and the two are timed against each other in the same run on the same machine.</p>
+        <details class="evidence" open>
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">5 findings, 1 caveat</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>The Python poller drove the C++ executor across 4,400 frames with <code>poller_client.py</code> untouched: every frame accepted, no telemetry row dropped.</li>
           <li>Executor-side wake_recv fell by 2.4x to 5.0x depending on the event loop and the percentile, 4.5us to 1.6us at p50 under uvloop. The Python baseline runs the poller and the executor on one event loop and the C++ configuration spawns a second process, so every ratio is an upper bound on what the language change bought.</li>
@@ -596,10 +934,12 @@
           <b>What the comparison measures</b>
           Two implementations of one wire protocol, timed on one machine in one run, with the raw rows committed on both sides. It is not a production A/B, and no number here is presented as one. The Python side is a published reference implementation of a system that was shut down on 2026-08-29.
         </div>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/executor-hotpath-cpp" target="_blank" rel="noopener">View source &amp; results → github.com/anaborne/executor-hotpath-cpp</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="data python">
         <div class="project-head">
           <div>
             <div class="project-title">Settlement Reconciliation</div>
@@ -613,6 +953,9 @@
           </div>
         </div>
         <p class="project-desc">A dbt project that joins a forward test's trade decision ledger to the Kalshi settlement feed that should explain it, classifies every decision the feed has not settled, and fails the build when the unexplained population grows past the size the repository records.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">6 findings, 1 caveat</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>281 decisions across 12 runs against a 263-row settlement feed, a 93.59% match rate. The 18 that do not settle are split into 11 unexplained, 6 still inside the feed's own lag window, and 1 market the exchange finalised without a binary result.</li>
           <li>The settlement window is computed from the feed rather than set as a constant. The newest load is the watermark and the largest close-to-load lag across the 263 settled rows, 20.2 hours, is how far back a decision can still be pending. The 11 unexplained rows sit more than five times that lag before the window opens.</li>
@@ -625,10 +968,12 @@
           <b>What is not diagnosed</b>
           The 11 unexplained rows are not explained. The extract does not contain the answer and none is asserted. The reverse break, a settlement with no decision, is 0 and cannot be anything else on this data, because the source enforces that key. The models run on demand and nothing here is a live pipeline.
         </div>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/settlement-reconciliation" target="_blank" rel="noopener">View source &amp; docs → github.com/anaborne/settlement-reconciliation</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="research python">
         <div class="project-head">
           <div>
             <div class="project-title">Kalshi Prop Calibration</div>
@@ -641,6 +986,9 @@
           </div>
         </div>
         <p class="project-desc">A pre-registered test of whether a forecast built from free public data beats the Kalshi mid-quote on NFL and NBA player props. The headline is a null. The finding worth keeping is structural: the midpoint convention stops being a probability when one side of the book is absent.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">5 findings</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>Hypotheses, features, model form, split, fee treatment and kill criteria were written down before any data was pulled. Later corrections are appended and dated, with the wrong text left standing.</li>
           <li>The midpoint convention (yes_bid + yes_ask)/2 stops tracking the strike when one side of the book is absent, which happens on 16.0% of 102,860 scored observations, and that alone inverts the sign of the headline Brier skill score.</li>
@@ -648,10 +996,12 @@
           <li>Free public data reproduces the exchange's own settlement on 61,978 of 61,984 resolvable markets (99.990%), with all six disagreements named by ticker.</li>
           <li>Every S1 statistic reproduces from a clean clone in about a minute with no network, off 4.7 MB of committed extracts.</li>
         </ul>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/kalshi-prop-calibration" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/kalshi-prop-calibration</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="research python">
         <div class="project-head">
           <div>
             <div class="project-title">NFL Pricing Model</div>
@@ -664,15 +1014,20 @@
           </div>
         </div>
         <p class="project-desc">A walk-forward Elo model over the 2025 NFL season, graded against the de-vigged market moneyline. The constants were fixed before any result was read, and the places the model loses to the market are in the repository.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">3 findings</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>Walk-forward Elo over 272 games using only pre-game information, constants fixed before any result.</li>
           <li>Brier 0.224 against the market's 0.212, reported with a full calibration diagram including where it lost.</li>
           <li>Where model and market disagree by more than 0.10 (n=57), the model's Brier is 0.2588 against the market's 0.2054 and its directional hit rate falls to 50.9%. The gap widens with disagreement, which is the opposite of a tradeable edge.</li>
         </ul>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/nfl-pricing-model" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/nfl-pricing-model</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="research python">
         <div class="project-head">
           <div>
             <div class="project-title">Kalshi Weather Market Calibration Study</div>
@@ -685,15 +1040,20 @@
           </div>
         </div>
         <p class="project-desc">A pre-registered test of whether Kalshi's daily temperature markets are mispriced. They are not. The kill criterion was written down before any backtest data was pulled, it triggered in every stratum, and the strategy was killed on that evidence.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">3 findings</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>Over 235,145 evaluated bucket-hours, the market mid-quote scored Brier 0.0772 against the model's 0.1739.</li>
           <li>Pulled 60,906 settled markets and 6.8M hourly observations at $0 cost, from unauthenticated public endpoints.</li>
           <li>Kill criterion fixed in writing before any backtest data, triggered in every stratum, strategy killed on that evidence.</li>
         </ul>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/kalshi-temperature-calibration" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/kalshi-temperature-calibration</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="research python">
         <div class="project-head">
           <div>
             <div class="project-title">Cross-Venue Settlement Identity Study</div>
@@ -706,6 +1066,9 @@
           </div>
         </div>
         <p class="project-desc">Two venues listing the same game are not automatically listing the same contract. Before pricing anything across Kalshi and Polymarket US, this asks whether a matched pair settles on the same source, at the same time, under the same edge-case rules. On the sample drawn, none of them do.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">4 findings, 1 caveat</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>74 game-moneyline pairs joined on league, date and teams from live open markets on both venues. 0 are settlement-identical: the source matches on 27 of 74, the settlement time on 0 of 74, the edge-case handling on 0 of 74.</li>
           <li>One clause carries all 74. Kalshi settles a postponed game at last fair price within 48 hours; Polymarket US honours the actual result within two weeks of the original date. A game replayed three to thirteen days late cashes one leg at a price and pays the other on the outcome, which is an unhedged bet on the rulebooks.</li>
@@ -716,10 +1079,12 @@
           <b>What a clone can and cannot check</b>
           The write-up, the run log and the 74 scored pairs are committed and readable. The roughly 570 MB raw pull behind them is not in the repository, so the comparison script needs that data to re-run and does not execute from a clone alone.
         </div>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/cross-venue" target="_blank" rel="noopener">View source &amp; write-up → github.com/anaborne/cross-venue</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="apps ts">
         <div class="project-head">
           <div>
             <div class="project-title">Freshli</div>
@@ -732,6 +1097,9 @@
           </div>
         </div>
         <p class="project-desc">A food-inventory app: photograph the groceries, get an editable inventory, get recipes from what is actually in the fridge. The part worth reading is the refactor. Pulling the logic that had been written twice into tested pure functions turned up five live defects, and the repository documents them.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">5 findings</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>Every expiration date read a day early west of UTC. A bare <code>YYYY-MM-DD</code> parses as UTC midnight per the spec and was compared against a local clock, so in New York an item expiring today displayed as expired from 20:00 the evening before. CI now runs the suite under UTC, America/New_York, Asia/Tokyo and Pacific/Kiritimati, because a green run in UTC alone would not have caught it.</li>
           <li>The day arithmetic mutated the value it then compared against, so the branch on the following line was correct only by accident and only while those two lines stayed in that order.</li>
@@ -739,10 +1107,12 @@
           <li>The <code>next/image</code> allowlist for generated recipe images sat in <code>next.config.js</code> while an empty <code>next.config.ts</code> shadowed it, so Next 15 ignored the file and every recipe illustration threw.</li>
           <li>28 tests over pure functions, no network, database, API key or component rendering, running in about 150ms. Typecheck and lint are clean gates.</li>
         </ul>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/freshli" target="_blank" rel="noopener">View source &amp; tests → github.com/anaborne/freshli</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="apps ts">
         <div class="project-head">
           <div>
             <div class="project-title">Google Write MCP</div>
@@ -755,14 +1125,19 @@
           </div>
         </div>
         <p class="project-desc">An MCP server that gives an AI agent in-place writes to Google Drive files, guarded by optimistic-concurrency revision tokens that refuse a stale write. A stale write would otherwise fork the document silently.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">2 findings</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>Verified with 55 unit tests plus a 41-check suite that runs against a live Drive account.</li>
           <li>MIT-licensed and published; CI green on Node 18, 20, and 22.</li>
         </ul>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/gdrive-write-mcp" target="_blank" rel="noopener">View source → github.com/anaborne/gdrive-write-mcp</a>
-      </div>
+      </article>
 
-      <div class="project">
+      <article class="project reveal" data-tags="apps ts">
         <div class="project-head">
           <div>
             <div class="project-title">Gmail Multi-Account MCP</div>
@@ -776,15 +1151,21 @@
           </div>
         </div>
         <p class="project-desc">An MCP server that holds several Gmail accounts open at the same time. A connector authenticates one account, so reaching a second means disconnecting and reconnecting or forwarding one inbox into the other, and both lose the distinction that decided to keep them apart.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">4 findings</span></summary>
+          <div class="evidence-body">
         <ul class="bullets">
           <li>An account label is checked rather than trusted. On an account's first use the server calls <code>users.getProfile</code> and compares the address it was configured with; a mismatch disables that account and names both addresses. The setup error this catches is pasting the second token under the first label, which otherwise produces a server that works and reads the wrong inbox.</li>
           <li>Reads and writes are deliberately asymmetric. A read may name any mailbox and says in its header which one it used. A write always names its own account, never inherits the active one, and is refused when the two differ unless the call passes <code>confirmAccountSwitch</code>.</li>
           <li>19 tools, 17 of them when sending is off. With <code>GMAIL_ALLOW_SEND</code> unset the send tools are never registered, so the tool list a client sees contains no way to put mail on the wire, and only the exact string <code>true</code> turns them on.</li>
           <li>Subject, address and threading values are rejected if they carry CR or LF before the message is assembled, so text arriving in an email body cannot add its own <code>Bcc</code>. 68 tests run from a clean clone with no network and no credentials, green on Node 18, 20 and 22.</li>
         </ul>
+          </div>
+        </details>
         <a class="project-link" href="https://github.com/anaborne/gmail-multi-mcp" target="_blank" rel="noopener">View source &rarr; github.com/anaborne/gmail-multi-mcp</a>
-      </div>
+      </article>
 
+      </div>
     </div>
   </section>
 
@@ -795,7 +1176,7 @@
         <p class="eyebrow">May 2024 to June 2026</p>
       </div>
 
-      <div class="job">
+      <div class="job reveal">
         <div class="job-meta">
           <div class="role">Data Engineering<br>Research Assistant</div>
           <div class="org">Wharton Accounting Department</div>
@@ -808,7 +1189,7 @@
         </ul>
       </div>
 
-      <div class="job">
+      <div class="job reveal">
         <div class="job-meta">
           <div class="role">Software Engineer<br>Intern</div>
           <div class="org">GoodRun</div>
@@ -831,12 +1212,12 @@
       </div>
 
       <div class="bg-grid">
-        <div class="bg-card">
+        <div class="bg-card reveal">
           <div class="role">B.A. Computer Science &amp; English</div>
           <div class="org">University of Pennsylvania · QuestBridge Match Scholar</div>
           <div class="when">EXPECTED DECEMBER 2026<br>PHILADELPHIA, PA</div>
         </div>
-        <div class="bg-card">
+        <div class="bg-card reveal">
           <div class="role">U.S. National Team Training Partner</div>
           <div class="org">Short Track Speed Skating · US Speedskating</div>
           <div class="when">2019 to 2022</div>
@@ -872,6 +1253,295 @@
     <p class="foot-note">This page is a static file. No build step, no analytics, no tracking. Everything on it is runnable, sourced, or downloadable; nothing is asserted that the linked repos or the résumé don't already say.</p>
   </div>
 </footer>
+
+<dialog class="palette" id="palette" aria-label="Jump to">
+  <div class="palette-field">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <label class="visually-hidden" for="palette-input">Jump to a section, project, or link</label>
+    <input id="palette-input" type="text" autocomplete="off" placeholder="Jump to a project, section, or link…"
+           role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list">
+  </div>
+  <ul class="palette-list" id="palette-list" role="listbox" aria-label="Results"></ul>
+  <p class="palette-empty" id="palette-empty" hidden>Nothing matches that.</p>
+  <div class="palette-foot">
+    <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+    <span><kbd>↵</kbd> open</span>
+    <span><kbd>esc</kbd> close</span>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.body.classList.remove("no-js");
+
+  /* ---- header height feeds scroll-padding and the sticky filter rail ---- */
+  var header = document.querySelector("header.site");
+  function measureNav(){ root.style.setProperty("--nav-h", header.offsetHeight + "px"); }
+  measureNav();
+  addEventListener("resize", measureNav);
+
+  /* ---- theme ---- */
+  var toggle = document.getElementById("theme-toggle");
+  function currentTheme(){
+    return root.getAttribute("data-theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  }
+  function syncToggleLabel(){
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    toggle.setAttribute("aria-label", "Switch to " + next + " theme");
+  }
+  syncToggleLabel();
+  toggle.addEventListener("click", function(){
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try{ localStorage.setItem("theme", next); }catch(e){}
+    syncToggleLabel();
+  });
+
+  /* ---- copy email ---- */
+  var copyBtn = document.getElementById("copy-email");
+  copyBtn.addEventListener("click", function(){
+    navigator.clipboard.writeText(copyBtn.dataset.email).then(function(){
+      copyBtn.classList.add("done");
+      setTimeout(function(){ copyBtn.classList.remove("done"); }, 2000);
+    }, function(){
+      location.href = "mailto:" + copyBtn.dataset.email;
+    });
+  });
+
+  /* ---- scroll progress + section highlighting ---- */
+  var bar = document.getElementById("progress");
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("nav.links a"));
+  var ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var max = document.body.scrollHeight - innerHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? scrollY / max : 0) + ")";
+      ticking = false;
+    });
+  }
+  addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var link = navLinks.filter(function(a){ return a.hash === "#" + e.target.id; })[0];
+      if(link) link.setAttribute("aria-current", e.isIntersecting ? "true" : "false");
+    });
+  }, {rootMargin: "-45% 0px -50% 0px"});
+  ["work","experience","background"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) spy.observe(el);
+  });
+
+  /* ---- reveal on scroll ---- */
+  var revealer = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add("shown");
+      obs.unobserve(e.target);
+    });
+  }, {rootMargin: "0px 0px -8% 0px"});
+  document.querySelectorAll(".reveal").forEach(function(el){ revealer.observe(el); });
+
+  /* ---- ticker: underline sweep, and the two plain integers count up ---- */
+  var ticker = document.getElementById("ticker");
+  new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      ticker.classList.add("in-view");
+      obs.unobserve(e.target);
+      if(reduced) return;
+      e.target.querySelectorAll("[data-countup]").forEach(function(el){
+        var target = Number(el.dataset.countup), start = performance.now(), dur = 900;
+        (function step(now){
+          var p = Math.min(1, (now - start) / dur);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString("en-US");
+          if(p < 1) requestAnimationFrame(step);
+        })(start);
+      });
+    });
+  }, {threshold: 0.4}).observe(ticker);
+
+  /* ---- animate the hot path only while the diagram is visible ---- */
+  var diagram = document.querySelector(".diagram");
+  if(diagram){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ diagram.classList.toggle("live", e.isIntersecting); });
+    }, {threshold: 0.25}).observe(diagram);
+  }
+
+  /* ---- project filter ---- */
+  var work = document.getElementById("work");
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".project"));
+  var search = document.getElementById("project-search");
+  var searchField = document.getElementById("search-field");
+  var clearBtn = document.getElementById("clear-search");
+  var chips = Array.prototype.slice.call(document.querySelectorAll("button.chip[data-filter]"));
+  var countEl = document.getElementById("filter-count");
+  var expandAll = document.getElementById("expand-all");
+  var total = cards.length;
+  var activeTag = "";
+  var forcedOpen = false;
+
+  cards.forEach(function(card){
+    card.dataset.haystack = card.textContent.toLowerCase().replace(/\s+/g, " ");
+    var d = card.querySelector("details.evidence");
+    if(d) d.dataset.defaultOpen = d.open ? "1" : "";
+  });
+
+  function applyFilter(){
+    var q = search.value.trim().toLowerCase();
+    var shown = 0;
+    searchField.classList.toggle("has-value", q.length > 0);
+    cards.forEach(function(card){
+      var match = (!activeTag || card.dataset.tags.split(" ").indexOf(activeTag) > -1) &&
+                  (!q || card.dataset.haystack.indexOf(q) > -1);
+      card.hidden = !match;
+      if(match) shown++;
+      var d = card.querySelector("details.evidence");
+      if(d && !forcedOpen) d.open = q ? match : d.dataset.defaultOpen === "1";
+    });
+    work.classList.toggle("no-results", shown === 0);
+    countEl.textContent = shown === total
+      ? total + " of " + total + " projects"
+      : shown + " of " + total + " projects" + (shown === 0 ? "" : " match");
+  }
+
+  search.addEventListener("input", applyFilter);
+  clearBtn.addEventListener("click", function(){ search.value = ""; applyFilter(); search.focus(); });
+  chips.forEach(function(chip){
+    chip.addEventListener("click", function(){
+      activeTag = chip.dataset.filter;
+      chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c === chip)); });
+      applyFilter();
+    });
+  });
+  document.querySelectorAll("[data-reset]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      search.value = "";
+      activeTag = "";
+      chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.filter === "")); });
+      applyFilter();
+      search.focus();
+    });
+  });
+
+  expandAll.addEventListener("click", function(){
+    forcedOpen = !forcedOpen;
+    document.querySelectorAll("details.evidence").forEach(function(d){ d.open = forcedOpen; });
+    expandAll.setAttribute("aria-expanded", String(forcedOpen));
+    expandAll.textContent = forcedOpen ? "Collapse all evidence" : "Expand all evidence";
+  });
+
+  /* ---- command palette ---- */
+  var dialog = document.getElementById("palette");
+  var pInput = document.getElementById("palette-input");
+  var pList = document.getElementById("palette-list");
+  var pEmpty = document.getElementById("palette-empty");
+  var cursor = 0;
+
+  var entries = [
+    {kind:"section", name:"Selected work", go:function(){ jump("#work"); }},
+    {kind:"section", name:"Experience", go:function(){ jump("#experience"); }},
+    {kind:"section", name:"Background", go:function(){ jump("#background"); }},
+    {kind:"link", name:"Résumé (PDF)", go:function(){ open("resume.pdf", "_blank", "noopener"); }},
+    {kind:"link", name:"Email immanuel.anaborne@gmail.com", go:function(){ location.href = "mailto:immanuel.anaborne@gmail.com"; }},
+    {kind:"link", name:"GitHub — github.com/anaborne", go:function(){ open("https://github.com/anaborne", "_blank", "noopener"); }},
+    {kind:"link", name:"LinkedIn — linkedin.com/in/anaborne", go:function(){ open("https://linkedin.com/in/anaborne", "_blank", "noopener"); }}
+  ];
+  cards.forEach(function(card, i){
+    var id = "project-" + i;
+    card.id = id;
+    entries.push({
+      kind: "project",
+      name: card.querySelector(".project-title").textContent,
+      go: function(){
+        card.hidden = false;
+        var d = card.querySelector("details.evidence");
+        if(d) d.open = true;
+        jump("#" + id);
+      }
+    });
+  });
+
+  function jump(hash){
+    var el = document.querySelector(hash);
+    if(el) el.scrollIntoView({behavior: reduced ? "auto" : "smooth", block: "start"});
+  }
+
+  function render(){
+    var q = pInput.value.trim().toLowerCase();
+    var hits = entries.filter(function(e){ return !q || e.name.toLowerCase().indexOf(q) > -1; });
+    cursor = 0;
+    pList.innerHTML = "";
+    hits.forEach(function(e, i){
+      var li = document.createElement("li");
+      li.id = "palette-opt-" + i;
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", String(i === 0));
+      li.innerHTML = '<span class="p-kind"></span><span class="p-name"></span>';
+      li.firstChild.textContent = e.kind;
+      li.lastChild.textContent = e.name;
+      li.addEventListener("click", function(){ dialog.close(); e.go(); });
+      li.addEventListener("mousemove", function(){ select(i); });
+      pList.appendChild(li);
+    });
+    pEmpty.hidden = hits.length > 0;
+    pInput.setAttribute("aria-activedescendant", hits.length ? "palette-opt-0" : "");
+    return hits;
+  }
+
+  function select(i){
+    var items = pList.children;
+    if(!items.length) return;
+    cursor = (i + items.length) % items.length;
+    for(var n = 0; n < items.length; n++) items[n].setAttribute("aria-selected", String(n === cursor));
+    items[cursor].scrollIntoView({block: "nearest"});
+    pInput.setAttribute("aria-activedescendant", items[cursor].id);
+  }
+
+  function openPalette(){
+    pInput.value = "";
+    render();
+    dialog.showModal();
+    pInput.focus();
+  }
+
+  document.getElementById("palette-open").addEventListener("click", openPalette);
+  pInput.addEventListener("input", render);
+  dialog.addEventListener("click", function(e){ if(e.target === dialog) dialog.close(); });
+
+  pInput.addEventListener("keydown", function(e){
+    var hits = pList.children;
+    if(e.key === "ArrowDown"){ e.preventDefault(); select(cursor + 1); }
+    else if(e.key === "ArrowUp"){ e.preventDefault(); select(cursor - 1); }
+    else if(e.key === "Enter" && hits.length){
+      e.preventDefault();
+      var go = entries.filter(function(en){ return en.name === hits[cursor].lastChild.textContent; })[0];
+      dialog.close();
+      if(go) go.go();
+    }
+  });
+
+  addEventListener("keydown", function(e){
+    if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k"){
+      e.preventDefault();
+      dialog.open ? dialog.close() : openPalette();
+    }
+    if(e.key === "/" && !dialog.open && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)){
+      e.preventDefault();
+      search.scrollIntoView({behavior: reduced ? "auto" : "smooth", block: "center"});
+      search.focus();
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
