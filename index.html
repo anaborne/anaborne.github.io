@@ -766,7 +766,7 @@
           <div class="s">IDF-weighted inverted index</div>
         </div>
         <div class="stat">
-          <div class="k"><span data-countup="391">391</span></div>
+          <div class="k"><span data-countup="395">395</span></div>
           <div class="l">Offline tests, public repo</div>
           <div class="s">mypy --strict · ruff clean</div>
         </div>
@@ -829,7 +829,7 @@
           <div class="badges">
             <span class="badge">mypy --strict</span>
             <span class="badge">ruff clean</span>
-            <span class="badge">391 tests</span>
+            <span class="badge">395 tests</span>
             <span class="badge">public extraction</span>
           </div>
         </div>
@@ -915,7 +915,7 @@
           <div class="badges">
             <span class="badge">CI: Linux + macOS</span>
             <span class="badge">ASan/UBSan</span>
-            <span class="badge">91 tests</span>
+            <span class="badge">92 tests</span>
             <span class="badge">byte-identical to orjson</span>
           </div>
         </div>
@@ -925,7 +925,7 @@
           <div class="evidence-body">
         <ul class="bullets">
           <li>The Python poller drove the C++ executor across 4,400 frames with <code>poller_client.py</code> untouched: every frame accepted, no telemetry row dropped.</li>
-          <li>Executor-side wake_recv fell by 2.4x to 5.0x depending on the event loop and the percentile, 4.5us to 1.6us at p50 under uvloop. The Python baseline runs the poller and the executor on one event loop and the C++ configuration spawns a second process, so every ratio is an upper bound on what the language change bought.</li>
+          <li>Executor-side wake_recv fell by 2.4x at p99 and 2.8x at p50 under uvloop, 4.5us to 1.6us at p50. The Python baseline runs the poller and the executor on one event loop and the C++ configuration spawns a second process, so every ratio is an upper bound on what the language change bought.</li>
           <li>The encoder is byte identical to orjson: 10 golden frames, 1,000 doubles and 424 rounding cases were produced by running the Python and are asserted in the C++ suite.</li>
           <li>The pre-registered expectation was wrong in both halves, and the README says so in its third paragraph. The signer row, 2.8x in the port's favour, compares two OpenSSL builds rather than two languages and stays in the table with its meaning corrected.</li>
           <li>Telemetry leaves the read loop through an 8192-row ring and one writer thread. A full ring drops the row and counts it, so a database write never delays an ack.</li>
@@ -957,12 +957,12 @@
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">6 findings, 1 caveat</span></summary>
           <div class="evidence-body">
         <ul class="bullets">
-          <li>281 decisions across 12 runs against a 263-row settlement feed, a 93.59% match rate. The 18 that do not settle are split into 11 unexplained, 6 still inside the feed's own lag window, and 1 market the exchange finalised without a binary result.</li>
+          <li>281 decisions from 5 of the 12 runs in the run log, against a 263-row settlement feed, a 93.59% match rate. The 18 that do not settle are split into 11 unexplained, 6 still inside the feed's own lag window, and 1 market the exchange finalised without a binary result.</li>
           <li>The settlement window is computed from the feed rather than set as a constant. The newest load is the watermark and the largest close-to-load lag across the 263 settled rows, 20.2 hours, is how far back a decision can still be pending. The 11 unexplained rows sit more than five times that lag before the window opens.</li>
           <li>Every control is proven to fail when its fault is injected. <code>verify_controls.py</code> copies the fixture, breaks one thing, rebuilds the models, and asserts that one control catches it. 15 of 15, as its own CI job on every push.</li>
-          <li>One control is published as inert rather than counted. A relationships test on the join only sees rows where the join matched, so it cannot fail, and a rowcount guard is kept as the falsifiable check in its place.</li>
+          <li>A sixteenth control is published as inert rather than counted. A relationships test on the join only sees rows where the join matched, so it cannot fail, and a rowcount guard is kept as the falsifiable check in its place.</li>
           <li>The one correlation that survives is confounded and says so. All 11 unexplained rows fall in the first 21 decisions under the early rulesets, and ruleset moves with collection time across those rows, so no cause is asserted.</li>
-          <li>44 KB of parquet is committed, so a clone runs the whole project, the tests, and the mutation harness with no warehouse account and no access to the private source.</li>
+          <li>31 KB of parquet is committed, so a clone runs the whole project, the tests, and the mutation harness with no warehouse account and no access to the private source.</li>
         </ul>
         <div class="caveat">
           <b>What is not diagnosed</b>
@@ -981,7 +981,7 @@
           </div>
           <div class="badges">
             <span class="badge">pre-registered</span>
-            <span class="badge">99 tests</span>
+            <span class="badge">100 tests</span>
             <span class="badge">corrections published</span>
           </div>
         </div>
@@ -1070,7 +1070,7 @@
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">4 findings, 1 caveat</span></summary>
           <div class="evidence-body">
         <ul class="bullets">
-          <li>74 game-moneyline pairs joined on league, date and teams from live open markets on both venues. 0 are settlement-identical: the source matches on 27 of 74, the settlement time on 0 of 74, the edge-case handling on 0 of 74.</li>
+          <li>74 game-moneyline pairs joined on league, date and teams from live open markets on both venues. 0 are settlement-identical: the settlement source matches on 0 of 74, the settlement time on 0 of 74, and the cancellation handling on 74 of 74.</li>
           <li>One clause carries all 74. Kalshi settles a postponed game at last fair price within 48 hours; Polymarket US honours the actual result within two weeks of the original date. A game replayed three to thirteen days late cashes one leg at a price and pays the other on the outcome, which is an unhedged bet on the rulebooks.</li>
           <li>The kill threshold of 30 settlement-identical pairs was fixed in writing before the sample was drawn. The sample came in at 74 against a 40-pair minimum, was not adjusted afterwards, and the study was stopped at its first gate for $0 and one day.</li>
           <li>Reconciliation is printed at every step. 115 Kalshi events retrieved, 111 parsed, 4 dropped with the reason named. A pull that reported 2,499 markets on a short page was caught by that same check and was low by a factor of 217.</li>
@@ -1091,7 +1091,7 @@
             <div class="project-stack">TypeScript · Next.js 15 · Supabase · OpenAI</div>
           </div>
           <div class="badges">
-            <span class="badge">28 tests</span>
+            <span class="badge">40 tests</span>
             <span class="badge">CI across 4 timezones</span>
             <span class="badge">bugs published</span>
           </div>
@@ -1105,7 +1105,7 @@
           <li>The day arithmetic mutated the value it then compared against, so the branch on the following line was correct only by accident and only while those two lines stayed in that order.</li>
           <li>The recipe-line parser matched integer quantities only, so <code>Chicken Thighs (1.5 lb)</code> fell through to the branch meant for salt and pepper and deducted 1 from the user's inventory instead of 1.5. A wrong write, silently.</li>
           <li>The <code>next/image</code> allowlist for generated recipe images sat in <code>next.config.js</code> while an empty <code>next.config.ts</code> shadowed it, so Next 15 ignored the file and every recipe illustration threw.</li>
-          <li>28 tests over pure functions, no network, database, API key or component rendering, running in about 150ms. Typecheck and lint are clean gates.</li>
+          <li>40 tests over pure functions, no network, database, API key or component rendering. Typecheck and lint are clean gates.</li>
         </ul>
           </div>
         </details>
@@ -1126,10 +1126,11 @@
         </div>
         <p class="project-desc">An MCP server that gives an AI agent in-place writes to Google Drive files, guarded by optimistic-concurrency revision tokens that refuse a stale write. A stale write would otherwise fork the document silently.</p>
         <details class="evidence">
-          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">2 findings</span></summary>
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">3 findings</span></summary>
           <div class="evidence-body">
         <ul class="bullets">
-          <li>Verified with 55 unit tests plus a 41-check suite that runs against a live Drive account.</li>
+          <li>Verified with 67 unit tests plus a 41-check suite that runs against a live Drive account.</li>
+          <li>It refuses what it cannot write safely. A binary file, and every native Google type except Docs and Sheets, is refused before any write is issued, so a PDF is never overwritten with the text of its own base64.</li>
           <li>MIT-licensed and published; CI green on Node 18, 20, and 22.</li>
         </ul>
           </div>
@@ -1146,7 +1147,7 @@
           <div class="badges">
             <span class="badge">MIT</span>
             <span class="badge">CI: Node 18/20/22</span>
-            <span class="badge">68 tests</span>
+            <span class="badge">73 tests</span>
             <span class="badge">sending off by default</span>
           </div>
         </div>
@@ -1157,8 +1158,8 @@
         <ul class="bullets">
           <li>An account label is checked rather than trusted. On an account's first use the server calls <code>users.getProfile</code> and compares the address it was configured with; a mismatch disables that account and names both addresses. The setup error this catches is pasting the second token under the first label, which otherwise produces a server that works and reads the wrong inbox.</li>
           <li>Reads and writes are deliberately asymmetric. A read may name any mailbox and says in its header which one it used. A write always names its own account, never inherits the active one, and is refused when the two differ unless the call passes <code>confirmAccountSwitch</code>.</li>
-          <li>19 tools, 17 of them when sending is off. With <code>GMAIL_ALLOW_SEND</code> unset the send tools are never registered, so the tool list a client sees contains no way to put mail on the wire, and only the exact string <code>true</code> turns them on.</li>
-          <li>Subject, address and threading values are rejected if they carry CR or LF before the message is assembled, so text arriving in an email body cannot add its own <code>Bcc</code>. 68 tests run from a clean clone with no network and no credentials, green on Node 18, 20 and 22.</li>
+          <li>19 tools, 17 of them when sending is off. With <code>GMAIL_ALLOW_SEND</code> unset the send tools are never registered, so the tool list a client sees contains no way to put mail on the wire, and turning them on takes the value <code>true</code>, case-insensitively, with anything else failing at startup on an error that names the variable.</li>
+          <li>Subject, address and threading values are rejected if they carry CR or LF before the message is assembled, so text arriving in an email body cannot add its own <code>Bcc</code>. 73 tests run from a clean clone with no network and no credentials, green on Node 18, 20 and 22.</li>
         </ul>
           </div>
         </details>
