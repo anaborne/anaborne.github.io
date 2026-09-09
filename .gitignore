@@ -1,0 +1,7 @@
+# added 2026-09-08 during disk cleanup
+.venv/
+node_modules/
+__pycache__/
+.DS_Store
+.pytest_cache/
+.ruff_cache/
