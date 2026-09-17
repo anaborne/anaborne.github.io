@@ -756,14 +756,14 @@
 
       <div class="ticker" id="ticker">
         <div class="stat">
-          <div class="k">1.35 &rarr; 0.725<span style="font-size:0.85rem;">ms</span></div>
-          <div class="l">Wake-send p99, asyncio &rarr; uvloop</div>
-          <div class="s">reproducible from a clean clone</div>
+          <div class="k">120M &rarr; 159,635</div>
+          <div class="l">Candidate pairs scored, cross-venue matcher</div>
+          <div class="s">250 of 250 planted pairs recovered, from a clean clone</div>
         </div>
         <div class="stat">
-          <div class="k">~1B → 63K</div>
-          <div class="l">Cross-venue search space</div>
-          <div class="s">IDF-weighted inverted index</div>
+          <div class="k">2.8&times;</div>
+          <div class="l">Executor wake_recv p50, Python &rarr; C++</div>
+          <div class="s">one machine, one run, an upper bound</div>
         </div>
         <div class="stat">
           <div class="k"><span data-countup="395">395</span></div>
@@ -889,7 +889,7 @@
         </figure>
 
         <ul class="bullets">
-          <li>Chose uvloop over stock asyncio on a measured benchmark. In the public repo, wake-send p99 drops from 1.35ms to 0.725ms, 46% faster.</li>
+          <li>Chose uvloop over stock asyncio on a measured benchmark. Latency is a property of the machine that runs the code, so every run is committed to <code>benchmarks/history.csv</code> with its platform tag and a clone prints its own numbers. On the most recent committed run, wake_recv p50 falls from 0.0059ms to 0.0045ms under uvloop.</li>
           <li>Designed an IDF-weighted inverted index that prices a full two-venue cross by cutting a ~1B-pair search space to ~63K scored candidates.</li>
           <li>Root-caused a position-cap defect that had rejected 4,233 valid orders over 23 hours against zero open positions; replaced the counter-based estimate with live exchange-position reconciliation at no added API cost.</li>
           <li>Runs strategy searches as pre-registered experiments, with criterion, sample size, and stopping rule fixed before data, and kills each on its own evidence.</li>
@@ -1020,7 +1020,7 @@
         <ul class="bullets">
           <li>Walk-forward Elo over 272 games using only pre-game information, constants fixed before any result.</li>
           <li>Brier 0.224 against the market's 0.212, reported with a full calibration diagram including where it lost.</li>
-          <li>Where model and market disagree by more than 0.10 (n=57), the model's Brier is 0.2588 against the market's 0.2054 and its directional hit rate falls to 50.9%. The gap widens with disagreement, which is the opposite of a tradeable edge.</li>
+          <li>Where model and market disagree by more than 0.10 (n=57), the model's Brier is 0.2614 against the market's 0.2040 and its directional hit rate falls to 50.9%. The gap widens with disagreement, which is the opposite of a tradeable edge.</li>
         </ul>
           </div>
         </details>
@@ -1072,7 +1072,7 @@
         <ul class="bullets">
           <li>74 game-moneyline pairs joined on league, date and teams from live open markets on both venues. 0 are settlement-identical: the settlement source matches on 0 of 74, the settlement time on 0 of 74, and the cancellation handling on 74 of 74.</li>
           <li>One clause carries all 74. Kalshi settles a postponed game at last fair price within 48 hours; Polymarket US honours the actual result within two weeks of the original date. A game replayed three to thirteen days late cashes one leg at a price and pays the other on the outcome, which is an unhedged bet on the rulebooks.</li>
-          <li>The kill threshold of 30 settlement-identical pairs was fixed in writing before the sample was drawn. The sample came in at 74 against a 40-pair minimum, was not adjusted afterwards, and the study was stopped at its first gate for $0 and one day.</li>
+          <li>The kill threshold of 30 settlement-identical pairs was fixed in writing in <code>PLAN.md</code> before the sample was drawn. The sample came in at 74, was not adjusted afterwards, and the study was stopped at its first gate for $0 and one day. The 40-pair minimum quoted in the run notes was never written into the pre-registration, and the notes say so.</li>
           <li>Reconciliation is printed at every step. 115 Kalshi events retrieved, 111 parsed, 4 dropped with the reason named. A pull that reported 2,499 markets on a short page was caught by that same check and was low by a factor of 217.</li>
         </ul>
         <div class="caveat">
@@ -1104,7 +1104,7 @@
           <li>Every expiration date read a day early west of UTC. A bare <code>YYYY-MM-DD</code> parses as UTC midnight per the spec and was compared against a local clock, so in New York an item expiring today displayed as expired from 20:00 the evening before. CI now runs the suite under UTC, America/New_York, Asia/Tokyo and Pacific/Kiritimati, because a green run in UTC alone would not have caught it.</li>
           <li>The day arithmetic mutated the value it then compared against, so the branch on the following line was correct only by accident and only while those two lines stayed in that order.</li>
           <li>The recipe-line parser matched integer quantities only, so <code>Chicken Thighs (1.5 lb)</code> fell through to the branch meant for salt and pepper and deducted 1 from the user's inventory instead of 1.5. A wrong write, silently.</li>
-          <li>The <code>next/image</code> allowlist for generated recipe images sat in <code>next.config.js</code> while an empty <code>next.config.ts</code> shadowed it, so Next 15 ignored the file and every recipe illustration threw.</li>
+          <li>The <code>next/image</code> allowlist for generated recipe images sat in <code>next.config.ts</code> while a <code>next.config.js</code> sat next to it. Next 15 resolves <code>next.config.js</code> first and ignores the <code>.ts</code> when both exist, so the allowlist was inactive and every recipe illustration threw.</li>
           <li>40 tests over pure functions, no network, database, API key or component rendering. Typecheck and lint are clean gates.</li>
         </ul>
           </div>
@@ -1147,7 +1147,7 @@
           <div class="badges">
             <span class="badge">MIT</span>
             <span class="badge">CI: Node 18/20/22</span>
-            <span class="badge">73 tests</span>
+            <span class="badge">81 tests</span>
             <span class="badge">sending off by default</span>
           </div>
         </div>
@@ -1159,7 +1159,7 @@
           <li>An account label is checked rather than trusted. On an account's first use the server calls <code>users.getProfile</code> and compares the address it was configured with; a mismatch disables that account and names both addresses. The setup error this catches is pasting the second token under the first label, which otherwise produces a server that works and reads the wrong inbox.</li>
           <li>Reads and writes are deliberately asymmetric. A read may name any mailbox and says in its header which one it used. A write always names its own account, never inherits the active one, and is refused when the two differ unless the call passes <code>confirmAccountSwitch</code>.</li>
           <li>19 tools, 17 of them when sending is off. With <code>GMAIL_ALLOW_SEND</code> unset the send tools are never registered, so the tool list a client sees contains no way to put mail on the wire, and turning them on takes the value <code>true</code>, case-insensitively, with anything else failing at startup on an error that names the variable.</li>
-          <li>Subject, address and threading values are rejected if they carry CR or LF before the message is assembled, so text arriving in an email body cannot add its own <code>Bcc</code>. 73 tests run from a clean clone with no network and no credentials, green on Node 18, 20 and 22.</li>
+          <li>Subject, address and threading values are rejected if they carry CR or LF before the message is assembled, so text arriving in an email body cannot add its own <code>Bcc</code>. 81 tests run from a clean clone with no network and no credentials, green on Node 18, 20 and 22.</li>
         </ul>
           </div>
         </details>
