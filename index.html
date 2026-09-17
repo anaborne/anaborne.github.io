@@ -609,6 +609,103 @@
   }
   .project-link:hover{ border-color: var(--accent-2); }
 
+
+  /* ============ PROJECT DEMOS ============ */
+  /* A 22-second clip per project. It is poster-only until you point at
+     it, focus it with the keyboard, or tap it, and the file is not fetched
+     before that: the src lives in data-src and is set on the first interaction,
+     so an unopened page costs ten posters and no video. */
+  .demo{
+    margin: 18px 0 0;
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #0E1417;
+    aspect-ratio: 16 / 9;
+    /* A full-width 16:9 block pushes the description off a laptop screen, and the
+       description is what a reader came for. Capped so the card still reads as a
+       card: title, clip, prose, evidence. */
+    max-height: 340px;
+    max-width: 604px;   /* 340 * 16/9, so the frame keeps its ratio when capped */
+    cursor: pointer;
+  }
+  .demo:hover{ border-color: var(--line-strong); }
+  /* The clips are rendered in this page's dark palette, so on the light theme they get
+     a defined edge instead of floating on a near-white field. */
+  :root[data-theme="light"] .demo, :root:not([data-theme="dark"]) .demo{
+    border-color: var(--line-strong);
+    box-shadow: var(--shadow);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .demo{ box-shadow: none; border-color: var(--line); }
+  }
+  .demo:focus-visible{ outline: 2px solid var(--accent-2); outline-offset: 3px; }
+  .demo img, .demo video{
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit: contain; display:block; background: #0E1417;
+  }
+  .demo video{ opacity: 0; transition: opacity .25s ease; }
+  .demo.playing video{ opacity: 1; }
+  .demo.playing img{ opacity: 0; transition: opacity .25s ease; }
+  /* The hint names what the control does and doubles as the AI disclosure
+     anchor. It fades out while the clip runs so it never sits over the text. */
+  .demo-hint{
+    display:flex; align-items:center; gap:8px;
+    margin-top: 7px;
+    max-width: 604px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 0.7rem; letter-spacing: 0.04em;
+    color: var(--ink-faint);
+  }
+  .demo-hint .verb{ color: var(--ink-soft); }
+  .demofig{ margin: 18px 0 0; }
+  .demo-hint .dot{
+    width:7px; height:7px; border-radius:50%; background: var(--accent); flex:none;
+    transition: background .2s ease;
+  }
+  .demofig:hover .dot{ background: var(--accent-2); }
+  .demo-hint .gen{ margin-left:auto; }
+  /* Under about 520px the two halves wrap into ragged columns, so they stack. */
+  @media (max-width: 560px){
+    .demo-hint{ flex-wrap: wrap; row-gap: 3px; }
+    .demo-hint .gen{ margin-left: 15px; width: 100%; }
+  }
+  /* Touch has no hover, so the control says tap and the clip toggles on tap. */
+  @media (hover: none){
+    .demo-hint .verb::after{ content:"Tap to play the 22s demo"; }
+  }
+  @media (hover: hover){
+    .demo-hint .verb::after{ content:"Hover to play the 22s demo"; }
+  }
+  .demo .playbtn{
+    display:none;
+    position:absolute; left:50%; top:50%; transform: translate(-50%,-50%);
+    z-index: 2;
+    align-items:center; gap:8px;
+    font-family:"IBM Plex Mono", monospace; font-size:0.78rem; font-weight:600;
+    color: var(--accent-ink); background: var(--accent);
+    border:0; border-radius: var(--radius); padding: 8px 14px; cursor:pointer;
+  }
+  .no-js .demo .playbtn{ display:flex; }
+  /* Someone who asked for less motion gets the still and a real play button, never a
+     clip that starts itself. This block follows the base rule on purpose: same
+     specificity, so the later one has to be the override. */
+  @media (prefers-reduced-motion: reduce){
+    .demo{ cursor: default; }
+    .demo-hint .verb::after{ content:"Press play for the 22s demo"; }
+    .demo .playbtn{ display:flex; }
+  }
+  /* The demo note under the section head carries the disclosure once, in full,
+     so the per-card line can stay short. */
+  .demo-note{
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    max-width: 68ch;
+  }
+  .demo-note code{ font-size: 0.8em; }
+
   /* ============ EXPERIENCE ============ */
   .job{ display:grid; grid-template-columns: 200px 1fr; gap: 24px; }
   .job + .job{ margin-top: 36px; padding-top: 36px; border-top: 1px solid var(--line); }
@@ -784,6 +881,7 @@
       <div class="section-head">
         <h2>Selected work</h2>
         <p class="eyebrow">Public repositories, verified by running</p>
+        <p class="demo-note">Each card carries a 22-second demo. The demos are AI-generated: written and rendered with <a href="https://github.com/latent-spaces/brag" target="_blank" rel="noopener">/brag</a> and <a href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener">HyperFrames</a>, from the text on this page. Every figure in them is a figure from the card beside it. The repositories, the numbers and the write-ups are mine.</p>
       </div>
 
       <div class="filterbar">
@@ -833,6 +931,17 @@
             <span class="badge">public extraction</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Kalshi / Polymarket Trading Infrastructure. AI-generated."
+               data-src="media/prediction-market-infra.mp4">
+            <img src="media/prediction-market-infra.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/prediction-market-infra.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">A two-process trading system for Kalshi and Polymarket: a poller that decides <em>what</em> to do, and a pre-warmed executor that owns <em>how</em> (order count, time-in-force, self-trade prevention), connected over a Unix domain socket so unbounded decision work never contends with the event loop that actually submits an order.</p>
 
         <details class="evidence" open>
@@ -919,6 +1028,17 @@
             <span class="badge">byte-identical to orjson</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Executor Hot Path in C++. AI-generated."
+               data-src="media/executor-hotpath-cpp.mp4">
+            <img src="media/executor-hotpath-cpp.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/executor-hotpath-cpp.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">The executor process from the trading system above, rewritten in C++20 against the same wire protocol, so the unmodified Python poller drives either one and the two are timed against each other in the same run on the same machine.</p>
         <details class="evidence" open>
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">5 findings, 1 caveat</span></summary>
@@ -952,6 +1072,17 @@
             <span class="badge">dbt docs on Pages</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Settlement Reconciliation. AI-generated."
+               data-src="media/settlement-reconciliation.mp4">
+            <img src="media/settlement-reconciliation.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/settlement-reconciliation.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">A dbt project that joins a forward test's trade decision ledger to the Kalshi settlement feed that should explain it, classifies every decision the feed has not settled, and fails the build when the unexplained population grows past the size the repository records.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">6 findings, 1 caveat</span></summary>
@@ -985,6 +1116,17 @@
             <span class="badge">corrections published</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Kalshi Prop Calibration. AI-generated."
+               data-src="media/kalshi-prop-calibration.mp4">
+            <img src="media/kalshi-prop-calibration.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/kalshi-prop-calibration.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">A pre-registered test of whether a forecast built from free public data beats the Kalshi mid-quote on NFL and NBA player props. The headline is a null. The finding worth keeping is structural: the midpoint convention stops being a probability when one side of the book is absent.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">5 findings</span></summary>
@@ -1013,6 +1155,17 @@
             <span class="badge">publishes its loss</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for NFL Pricing Model. AI-generated."
+               data-src="media/nfl-pricing-model.mp4">
+            <img src="media/nfl-pricing-model.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/nfl-pricing-model.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">A walk-forward Elo model over the 2025 NFL season, graded against the de-vigged market moneyline. The constants were fixed before any result was read, and the places the model loses to the market are in the repository.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">3 findings</span></summary>
@@ -1039,6 +1192,17 @@
             <span class="badge">$0 data cost</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Kalshi Weather Market Calibration Study. AI-generated."
+               data-src="media/kalshi-temperature-calibration.mp4">
+            <img src="media/kalshi-temperature-calibration.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/kalshi-temperature-calibration.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">A pre-registered test of whether Kalshi's daily temperature markets are mispriced. They are not. The kill criterion was written down before any backtest data was pulled, it triggered in every stratum, and the strategy was killed on that evidence.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">3 findings</span></summary>
@@ -1065,6 +1229,17 @@
             <span class="badge">$0 data cost</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Cross-Venue Settlement Identity Study. AI-generated."
+               data-src="media/cross-venue.mp4">
+            <img src="media/cross-venue.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/cross-venue.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">Two venues listing the same game are not automatically listing the same contract. Before pricing anything across Kalshi and Polymarket US, this asks whether a matched pair settles on the same source, at the same time, under the same edge-case rules. On the sample drawn, none of them do.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">4 findings, 1 caveat</span></summary>
@@ -1096,6 +1271,17 @@
             <span class="badge">bugs published</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Freshli. AI-generated."
+               data-src="media/freshli.mp4">
+            <img src="media/freshli.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/freshli.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">A food-inventory app: photograph the groceries, get an editable inventory, get recipes from what is actually in the fridge. The part worth reading is the refactor. Pulling the logic that had been written twice into tested pure functions turned up five live defects, and the repository documents them.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">5 findings</span></summary>
@@ -1124,6 +1310,17 @@
             <span class="badge">live-Drive verified</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Google Write MCP. AI-generated."
+               data-src="media/gdrive-write-mcp.mp4">
+            <img src="media/gdrive-write-mcp.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/gdrive-write-mcp.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">An MCP server that gives an AI agent in-place writes to Google Drive files, guarded by optimistic-concurrency revision tokens that refuse a stale write. A stale write would otherwise fork the document silently.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">3 findings</span></summary>
@@ -1151,6 +1348,17 @@
             <span class="badge">sending off by default</span>
           </div>
         </div>
+        <figure class="demofig">
+          <div class="demo" data-demo tabindex="0" role="button"
+               aria-label="Play the 22 second demo for Gmail Multi-Account MCP. AI-generated."
+               data-src="media/gmail-multi-mcp.mp4">
+            <img src="media/gmail-multi-mcp.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
+            <video muted loop playsinline preload="none" poster="media/gmail-multi-mcp.jpg" tabindex="-1" aria-hidden="true"></video>
+            <button type="button" class="playbtn">Play demo</button>
+          </div>
+          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
+        </figure>
+
         <p class="project-desc">An MCP server that holds several Gmail accounts open at the same time. A connector authenticates one account, so reaching a second means disconnecting and reconnecting or forwarding one inbox into the other, and both lose the distinction that decided to keep them apart.</p>
         <details class="evidence">
           <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">4 findings</span></summary>
@@ -1541,6 +1749,70 @@
       search.focus();
     }
   });
+  /* ---- project demos: poster until you point at it ---- */
+  (function(){
+    var demos = [].slice.call(document.querySelectorAll("[data-demo]"));
+    if(!demos.length) return;
+    var playing = null;
+
+    function load(d){
+      var v = d.querySelector("video");
+      if(!v.getAttribute("src")){ v.setAttribute("src", d.getAttribute("data-src")); }
+      return v;
+    }
+    function start(d){
+      if(playing && playing !== d) stop(playing);
+      var v = load(d);
+      d.classList.add("playing");
+      var p = v.play();
+      if(p && p.catch) p.catch(function(){ d.classList.remove("playing"); });
+      playing = d;
+    }
+    function stop(d){
+      var v = d.querySelector("video");
+      d.classList.remove("playing");
+      if(v){ v.pause(); try{ v.currentTime = 0; }catch(e){} }
+      if(playing === d) playing = null;
+    }
+    function toggle(d){ d.classList.contains("playing") ? stop(d) : start(d); }
+
+    /* Fetch the file a beat before it is needed, so a deliberate hover starts
+       on the first frame rather than on a spinner. A pointer passing over the
+       card on the way somewhere else never triggers it. */
+    var warm = null;
+    demos.forEach(function(d){
+      var btn = d.querySelector(".playbtn");
+      btn.addEventListener("click", function(e){ e.stopPropagation(); toggle(d); });
+
+      if(!reduced){
+        d.addEventListener("pointerenter", function(e){
+          if(e.pointerType === "touch") return;
+          warm = setTimeout(function(){ start(d); }, 90);
+        });
+        d.addEventListener("pointerleave", function(e){
+          if(e.pointerType === "touch") return;
+          clearTimeout(warm); stop(d);
+        });
+        d.addEventListener("focus", function(){ start(d); });
+        d.addEventListener("blur", function(){ stop(d); });
+      }
+      d.addEventListener("click", function(){ toggle(d); });
+      d.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(d); }
+      });
+    });
+
+    /* A clip scrolled off screen is not worth decoding. */
+    if("IntersectionObserver" in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(!en.isIntersecting && en.target.classList.contains("playing")) stop(en.target);
+        });
+      }, {threshold: 0.15});
+      demos.forEach(function(d){ io.observe(d); });
+    }
+  })();
+
 })();
 </script>
 
