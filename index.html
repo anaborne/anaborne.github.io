@@ -1133,7 +1133,7 @@
           <div class="evidence-body">
         <ul class="bullets">
           <li>Hypotheses, features, model form, split, fee treatment and kill criteria were written down before any data was pulled. Later corrections are appended and dated, with the wrong text left standing.</li>
-          <li>The midpoint convention (yes_bid + yes_ask)/2 stops tracking the strike when one side of the book is absent, which happens on 16.0% of 102,860 scored observations, and that alone inverts the sign of the headline Brier skill score.</li>
+          <li>The midpoint convention (yes_bid + yes_ask)/2 stops tracking the strike when one side of the book is absent, which happens on 16.0% of 102,860 scored observations. In the 87,053-observation training partition those one-sided rows are 17.3%, and they alone invert the sign of the headline Brier skill score.</li>
           <li>Caught a scoring-hour boundary bug that would have priced 88,796 of 144,176 observations (61.6%) with an hour of market information the model was denied, in the market's favour, before any score was recorded.</li>
           <li>Free public data reproduces the exchange's own settlement on 61,978 of 61,984 resolvable markets (99.990%), with all six disagreements named by ticker.</li>
           <li>Every S1 statistic reproduces from a clean clone in about a minute with no network, off 4.7 MB of committed extracts.</li>
@@ -1247,7 +1247,7 @@
         <ul class="bullets">
           <li>74 game-moneyline pairs joined on league, date and teams from live open markets on both venues. 0 are settlement-identical: the settlement source matches on 0 of 74, the settlement time on 0 of 74, and the cancellation handling on 74 of 74.</li>
           <li>One clause carries all 74. Kalshi settles a postponed game at last fair price within 48 hours; Polymarket US honours the actual result within two weeks of the original date. A game replayed three to thirteen days late cashes one leg at a price and pays the other on the outcome, which is an unhedged bet on the rulebooks.</li>
-          <li>The kill threshold of 30 settlement-identical pairs was fixed in writing in <code>PLAN.md</code> before the sample was drawn. The sample came in at 74, was not adjusted afterwards, and the study was stopped at its first gate for $0 and one day. The 40-pair minimum quoted in the run notes was never written into the pre-registration, and the notes say so.</li>
+          <li>The kill threshold of 30 settlement-identical pairs was set before the sample was drawn. The committed <code>PLAN.md</code> is dated 28 August, inside the 27 to 28 August run, so that order is stated here rather than checkable from the repo. The sample came in at 74, was not adjusted afterwards, and the study was stopped at its first gate for $0 and one day. The 40-pair minimum quoted in the run notes was never written into the pre-registration, and the notes say so.</li>
           <li>Reconciliation is printed at every step. 115 Kalshi events retrieved, 111 parsed, 4 dropped with the reason named. A pull that reported 2,499 markets on a short page was caught by that same check and was low by a factor of 217.</li>
         </ul>
         <div class="caveat">
