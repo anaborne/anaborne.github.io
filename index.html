@@ -313,7 +313,7 @@
   .ticker{
     margin-top: clamp(40px,6vw,64px);
     display:grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow:hidden;
@@ -334,7 +334,6 @@
   .ticker.in-view .stat::after{ transform: scaleX(1); }
   .ticker.in-view .stat:nth-child(2)::after{ transition-delay: .08s; }
   .ticker.in-view .stat:nth-child(3)::after{ transition-delay: .16s; }
-  .ticker.in-view .stat:nth-child(4)::after{ transition-delay: .24s; }
   .stat .k{
     font-family:"IBM Plex Mono", monospace;
     font-size: 1.5rem;
@@ -362,8 +361,7 @@
   }
   @media (max-width: 760px){
     .ticker{ grid-template-columns: repeat(2, 1fr); }
-    .stat:nth-child(3){ border-left:none; }
-    .stat:nth-child(3), .stat:nth-child(4){ border-top: 1px solid var(--line); }
+    .stat:nth-child(3){ border-left:none; border-top: 1px solid var(--line); grid-column: 1 / -1; }
   }
 
   /* ============ SECTION SHELL ============ */
@@ -858,11 +856,6 @@
           <div class="s">250 of 250 planted pairs recovered, from a clean clone</div>
         </div>
         <div class="stat">
-          <div class="k">2.8&times;</div>
-          <div class="l">Executor wake_recv p50, Python &rarr; C++</div>
-          <div class="s">one machine, one run, an upper bound</div>
-        </div>
-        <div class="stat">
           <div class="k"><span data-countup="395">395</span></div>
           <div class="l">Offline tests, public repo</div>
           <div class="s">mypy --strict · ruff clean</div>
@@ -901,19 +894,18 @@
             <button type="button" class="chip" data-filter="data" aria-pressed="false">Data</button>
             <button type="button" class="chip" data-filter="apps" aria-pressed="false">Apps &amp; tooling</button>
             <button type="button" class="chip" data-filter="python" aria-pressed="false">Python</button>
-            <button type="button" class="chip" data-filter="cpp" aria-pressed="false">C++</button>
             <button type="button" class="chip" data-filter="ts" aria-pressed="false">TypeScript</button>
           </div>
         </div>
         <div class="filter-meta">
-          <span id="filter-count" role="status" aria-live="polite">10 of 10 projects</span>
+          <span id="filter-count" role="status" aria-live="polite">9 of 9 projects</span>
           <button type="button" class="link-btn" id="expand-all" aria-expanded="false">Expand all evidence</button>
         </div>
       </div>
 
       <div class="empty-state">
         <p>No project matches that filter.</p>
-        <button type="button" class="link-btn" data-reset>Clear filters and show all 10</button>
+        <button type="button" class="link-btn" data-reset>Clear filters and show all 9</button>
       </div>
 
       <div id="project-list">
@@ -1013,50 +1005,6 @@
         </details>
 
         <a class="project-link" href="https://github.com/anaborne/prediction-market-infra" target="_blank" rel="noopener">View source &amp; benchmarks → github.com/anaborne/prediction-market-infra</a>
-      </article>
-
-      <article class="project reveal" data-tags="infra cpp">
-        <div class="project-head">
-          <div>
-            <div class="project-title">Executor Hot Path in C++</div>
-            <div class="project-stack">C++20 · CMake · Catch2 · OpenSSL 3 · SQLite · Unix domain sockets</div>
-          </div>
-          <div class="badges">
-            <span class="badge">CI: Linux + macOS</span>
-            <span class="badge">ASan/UBSan</span>
-            <span class="badge">92 tests</span>
-            <span class="badge">byte-identical to orjson</span>
-          </div>
-        </div>
-        <figure class="demofig">
-          <div class="demo" data-demo tabindex="0" role="button"
-               aria-label="Play the 22 second demo for Executor Hot Path in C++. AI-generated."
-               data-src="media/executor-hotpath-cpp.mp4">
-            <img src="media/executor-hotpath-cpp.jpg" alt="" loading="lazy" decoding="async" width="1280" height="720">
-            <video muted loop playsinline preload="none" poster="media/executor-hotpath-cpp.jpg" tabindex="-1" aria-hidden="true"></video>
-            <button type="button" class="playbtn">Play demo</button>
-          </div>
-          <figcaption class="demo-hint"><span class="dot"></span><span class="verb"></span><span class="gen">AI-generated</span></figcaption>
-        </figure>
-
-        <p class="project-desc">The executor process from the trading system above, rewritten in C++20 against the same wire protocol, so the unmodified Python poller drives either one and the two are timed against each other in the same run on the same machine.</p>
-        <details class="evidence" open>
-          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">5 findings, 1 caveat</span></summary>
-          <div class="evidence-body">
-        <ul class="bullets">
-          <li>The Python poller drove the C++ executor across 4,400 frames with <code>poller_client.py</code> untouched: every frame accepted, no telemetry row dropped.</li>
-          <li>Executor-side wake_recv fell by 2.4x at p99 and 2.8x at p50 under uvloop, 4.5us to 1.6us at p50. The Python baseline runs the poller and the executor on one event loop and the C++ configuration spawns a second process, so every ratio is an upper bound on what the language change bought.</li>
-          <li>The encoder is byte identical to orjson: 10 golden frames, 1,000 doubles and 424 rounding cases were produced by running the Python and are asserted in the C++ suite.</li>
-          <li>The pre-registered expectation was wrong in both halves, and the README says so in its third paragraph. The signer row, 2.8x in the port's favour, compares two OpenSSL builds rather than two languages and stays in the table with its meaning corrected.</li>
-          <li>Telemetry leaves the read loop through an 8192-row ring and one writer thread. A full ring drops the row and counts it, so a database write never delays an ack.</li>
-        </ul>
-        <div class="caveat">
-          <b>What the comparison measures</b>
-          Two implementations of one wire protocol, timed on one machine in one run, with the raw rows committed on both sides. It is not a production A/B, and no number here is presented as one. The Python side is a published reference implementation of a system that was shut down on 2026-08-29.
-        </div>
-          </div>
-        </details>
-        <a class="project-link" href="https://github.com/anaborne/executor-hotpath-cpp" target="_blank" rel="noopener">View source &amp; results → github.com/anaborne/executor-hotpath-cpp</a>
       </article>
 
       <article class="project reveal" data-tags="data python">
@@ -1450,10 +1398,10 @@
       <div class="skills">
         <p class="eyebrow">Technical skills</p>
         <div class="chip-row">
-          <span class="chip">Python</span><span class="chip">C++</span><span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">SQL</span>
+          <span class="chip">Python</span><span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">SQL</span>
           <span class="chip">Node.js</span><span class="chip">REST APIs</span><span class="chip">asyncio</span><span class="chip">Pydantic</span><span class="chip">React</span><span class="chip">MCP servers</span>
           <span class="chip">pandas</span><span class="chip">NumPy</span><span class="chip">RAG pipelines</span><span class="chip">OpenAI API</span>
-          <span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">Git</span><span class="chip">pytest</span><span class="chip">CMake</span><span class="chip">Catch2</span>
+          <span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">Git</span><span class="chip">pytest</span>
         </div>
       </div>
     </div>
