@@ -1083,6 +1083,34 @@
       <article class="project reveal" data-tags="research python">
         <div class="project-head">
           <div>
+            <div class="project-title">Kalshi Implied Range Pricer</div>
+            <div class="project-stack">Python (standard library only)</div>
+          </div>
+          <div class="badges">
+            <span class="badge">190 tests</span>
+            <span class="badge">149/149 mutants caught</span>
+            <span class="badge">no edge claimed</span>
+          </div>
+        </div>
+
+        <p class="project-desc">Prices any range on a Kalshi stat or index from the markets Kalshi already lists on the same number, with a fitted fair value and the bounds the quotes force on it. NFL passing-yards ranges come off the 25-yard threshold ladder; Kalshi's S&amp;P 500 close buckets are bounded by same-day SPX options. The curve tracks the market's quotes, and the README says plainly that it does not beat them.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">4 findings</span></summary>
+          <div class="evidence-body">
+        <ul class="bullets">
+          <li>Hiding each of 1,641 interior ladder strikes across 121 games (Sep 9 to Nov 2 2026), the fitted curve came within 0.82c of the hidden book's mid on average (95% CI 0.77c to 0.87c, resampling whole games), against 1.37c for straight-line interpolation, and inside the hidden bid/ask on 46.3% of strikes against 27.5%.</li>
+          <li>Kalshi's one-yard passing-yards books carried no price before kickoff: of 2,047 sampled one-yard strikes, every one was offered at 99c and 2 had any bid; 860 of 16,856 settled one-yard markets ever traded.</li>
+          <li>SPXW vertical spreads bound the S&amp;P buckets, with Cboe's 15-minute-delayed chain rolled to a live spot and clock. Over the Nov 4 2026 session (12 snapshots) the options fair value sat inside Kalshi's bid/ask on 28 of 39 two-sided bucket-snapshots. One session, one settlement.</li>
+          <li>Three of the 190 offline tests rerun every published result and require byte-equal output; a mutation harness plants 149 known bugs one at a time and the suite fails on all 149. Public APIs only, no key, no orders placed.</li>
+        </ul>
+          </div>
+        </details>
+        <a class="project-link" href="https://github.com/anaborne/kalshi-implied" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/kalshi-implied</a>
+      </article>
+
+      <article class="project reveal" data-tags="research python">
+        <div class="project-head">
+          <div>
             <div class="project-title">Kalshi Prop Calibration</div>
             <div class="project-stack">Python · numpy · scipy · pandas</div>
           </div>
