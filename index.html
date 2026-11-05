@@ -898,7 +898,7 @@
           </div>
         </div>
         <div class="filter-meta">
-          <span id="filter-count" role="status" aria-live="polite">9 of 9 projects</span>
+          <span id="filter-count" role="status" aria-live="polite">10 of 10 projects</span>
           <button type="button" class="link-btn" id="expand-all" aria-expanded="false">Expand all evidence</button>
         </div>
       </div>
@@ -1050,6 +1050,34 @@
           </div>
         </details>
         <a class="project-link" href="https://github.com/anaborne/settlement-reconciliation" target="_blank" rel="noopener">View source &amp; docs → github.com/anaborne/settlement-reconciliation</a>
+      </article>
+
+      <article class="project reveal" data-tags="infra research python">
+        <div class="project-head">
+          <div>
+            <div class="project-title">Combo RFQ Maker</div>
+            <div class="project-stack">Python · numpy · scipy · websockets · SQLite</div>
+          </div>
+          <div class="badges">
+            <span class="badge">no-lookahead replay</span>
+            <span class="badge">146 tests</span>
+            <span class="badge">reproduces exactly</span>
+          </div>
+        </div>
+
+        <p class="project-desc">A paper-trading maker for Polymarket combo RFQs. It prices each parlay with a same-game dependence model, sizes and skews quotes against a $50,000 book, and is judged by replaying 110,775 executed RFQs with no future information. The headline is a loss, and the report shows why: the combos a maker wins are the ones where fair is too low.</p>
+        <details class="evidence">
+          <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Evidence <span class="count">4 findings</span></summary>
+          <div class="evidence-body">
+        <ul class="bullets">
+          <li>On 7,190 resolved same-game RFQs the dependence model beats the product of leg prices on Brier score (0.1773 against 0.1819) and is level with the prices requesters paid (0.1780).</li>
+          <li>Correlations are fit by maximum likelihood per market-pair class from 900,489 same-game pairs, each game counted once; both teams to score against total goals fits +0.720 on 4,721 games. Soccer moneyline and total legs go through a Poisson score grid instead, since a win by either side comes with more goals than a draw.</li>
+          <li>Every quote stores its fair, price, size, expected edge and a named reason for each part of the margin, from leg-price uncertainty to inventory widen and skew.</li>
+          <li>The report leads with the loss: -$1,060 on 3,104 resolved fills, and the margin chosen on the first two weeks lost $5,415 out of sample. A published database reproduces the report exactly.</li>
+        </ul>
+          </div>
+        </details>
+        <a class="project-link" href="https://github.com/anaborne/combo-rfq" target="_blank" rel="noopener">View source &amp; data → github.com/anaborne/combo-rfq</a>
       </article>
 
       <article class="project reveal" data-tags="research python">
